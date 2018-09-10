@@ -1,0 +1,9 @@
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\bin\Debug\PerformanceMarkers.Tests.dll
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\bin\Debug\PerformanceMarkers.Tests.pdb
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\obj\Debug\PerformanceMarkers.Tests.dll
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\obj\Debug\PerformanceMarkers.Tests.pdb
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\bin\Debug\MbUnit.Framework.dll
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\bin\Debug\PerformanceMarkers.dll
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\bin\Debug\QuickGraph.Algorithms.dll
+C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers.Tests\bin\Debug\PerformanceMarkers.pdb

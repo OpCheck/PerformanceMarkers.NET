@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B107BEA4-CAF9-44D8-B635-8229082BFA83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PerformanceMarkers.Tests</RootNamespace>
+    <AssemblyName>PerformanceMarkers.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MbUnit.Framework, Version=2.4.2.355, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_AssemblyReferences\MbUnit\MbUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivityPointListNormalizerFixtures\GetEndPointFixtures\Fixture_01_SmallStack.cs" />
+    <Compile Include="ActivityPointListNormalizerFixtures\GetEndPointFixtures\Fixture_00_EmptyStack.cs" />
+    <Compile Include="ActivityPointListNormalizerFixtures\NormalizeFixtures\Fixture_01_MissingMarkerEnd.cs" />
+    <Compile Include="ActivityPointListNormalizerFixtures\NormalizeFixtures\Fixture_00_EmptyInputArray.cs" />
+    <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_05_MultipleLevelsOfNesting.cs" />
+    <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_04_MultipleNestedActivities.cs" />
+    <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_03_SingleNestedActivity.cs" />
+    <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_01_MarkerStack.cs" />
+    <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_00_EmptyStack.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_03_MultipleChildrenAndMultipleNestingLevels.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_02_MultipleNestingLevels.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_01_MultipleMarkerChildren.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_00_SingleMarkerChild.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\CreateReportFixtures\Fixture_10_MultipleLevelsOfNesting.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PerformanceMarkers\PerformanceMarkers.csproj">
+      <Project>{96094E2E-0E08-4171-8721-01D3A746191A}</Project>
+      <Name>PerformanceMarkers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
