@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MbUnit.Framework;
 
 using PerformanceMarkers;
+using PerformanceMarkers.MarkerReportFactories;
 
 namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.CreateReportForActivityReportItemFixtures
 {
@@ -283,7 +284,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.CreateReportForAc
 			//
 			// CREATE THE REPORT.
 			//
-			MarkerReportFactory CreatedFactory = new MarkerReportFactory();
+			PlainTextReportFactory CreatedFactory = new PlainTextReportFactory();
 			_ReportText = CreatedFactory.CreateReportForActivityReportItem(ParentReportItem, 0);
 		}
 		

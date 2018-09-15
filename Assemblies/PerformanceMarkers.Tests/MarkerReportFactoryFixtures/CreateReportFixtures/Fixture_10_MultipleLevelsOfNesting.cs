@@ -42,7 +42,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.CreateReportFixtu
 			//
 			// CREATE THE REPORT.
 			//
-			_ReportText = MarkerReportFactory.CreateReport(CreatedMarker);
+			_ReportText = MarkerReportFactoryProvider.CreateReportFactory().CreateReport(CreatedMarker);
 		}
 		
 		

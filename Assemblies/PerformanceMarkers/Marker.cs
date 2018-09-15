@@ -89,6 +89,24 @@ namespace PerformanceMarkers
 				_Enabled = value;
 			}
 		}
+		
+		
+		public bool IsDisabled
+		{
+			get
+			{
+				return !_Enabled;
+			}
+		}
+
+
+		public bool IsEnabled
+		{
+			get
+			{
+				return _Enabled;
+			}
+		}
 	
 
 		/// <summary>
@@ -103,11 +121,27 @@ namespace PerformanceMarkers
 		}
 
 
+		public MarkerFailureMode FailureMode
+		{
+			get
+			{
+				return _MarkerFailureMode;
+			}
+
+
+			set
+			{
+				_MarkerFailureMode = value;
+			}
+		}
+		
+
 		//
 		// INPUT FIELDS.
 		//
 		protected string _Name;
 		protected bool _Enabled;
+		protected MarkerFailureMode _MarkerFailureMode;
 		
 		//
 		// OPERATIONAL FIELDS.

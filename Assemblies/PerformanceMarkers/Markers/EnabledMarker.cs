@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PerformanceMarkers
+namespace PerformanceMarkers.Markers
 {
 	/// <summary>
 	/// Creates a marker that is enabled by default.

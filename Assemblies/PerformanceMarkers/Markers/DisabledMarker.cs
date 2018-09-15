@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PerformanceMarkers
+namespace PerformanceMarkers.Markers
 {
 	/// <summary>
 	/// A marker that is disabled by default.

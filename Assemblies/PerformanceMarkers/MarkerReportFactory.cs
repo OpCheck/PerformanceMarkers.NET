@@ -8,185 +8,51 @@ using PerformanceMarkers.Printers;
 namespace PerformanceMarkers
 {
 	/// <summary>
-	/// Creates a human-readable performance report.
+	/// Creates a human-readable performance report in a condensed text format.
 	/// </summary>
-	public class MarkerReportFactory
+	public abstract class MarkerReportFactory
 	{
-		public static string CreateReport (Marker CurrentMarker)
+		public MarkerReportFactory ()
 		{
-			using (MemoryStream TargetStream = new MemoryStream())
-			{
-				MarkerReportFactory CreatedFactory = new MarkerReportFactory();
-				CreatedFactory.PerformanceMarker = CurrentMarker;
-				CreatedFactory.TargetStream = TargetStream;
-				CreatedFactory.WriteReport();
-				
-				return Encoding.UTF8.GetString(TargetStream.ToArray());
-			}
+			_Encoding = Encoding.UTF8;
 		}
-	
-	
-		public void WriteReport ()
+
+
+		/// <summary>
+		/// A convenience method for creating a report as a string.
+		/// All this method does is write to a memory stream and return it as a UTF8 string.
+		/// Callers can also write directly to any stream by setting the TargetStream property and calling the WriteReport method.
+		/// </summary>
+		public virtual string CreateReport (Marker CurrentMarker)
 		{
 			//
-			// NORMALIZE THE ACTIVITY POINTS SO ALL ACTIVITIES WITH A START POINT HAVE AN EXPLICIT END POINT.
+			// IF THIS MARKER IS DISABLED THEN WE DO NOT CREATE A REPORT FOR IT.
 			//
-			ActivityPointStack NormalizedPointStack = ActivityPointListNormalizer.Normalize(_ActivityPoints);
-			
-			//
-			// CREATE THE ACTIVITY REPORT ITEM TREE.
-			//
-			ActivityReportItem MarkerReportItem = ActivityReportItemTreeFactory.CreateReportItemTree(NormalizedPointStack);
+			if (CurrentMarker.IsDisabled)
+				return "";
 			
 			//
 			// CREATE THE REPORT.
 			//
-			string ReportString = CreateReportForActivityReportItem(MarkerReportItem, 0);
-			
-			//
-			// WRITE THE REPORT TO THE TARGET STREAM.
-			//
-			using (StringReader SourceStringReader = new StringReader(ReportString))
+			using (MemoryStream TargetStream = new MemoryStream())
 			{
-				StreamWriter TargetStreamWriter = new StreamWriter(_TargetStream);
-				TargetStreamWriter.Write(SourceStringReader.ReadToEnd());
-				TargetStreamWriter.Flush();
+				_ActivityPoints = CurrentMarker.ActivityPoints;
+				_TargetStream = TargetStream;
+				WriteReport();
+				return _Encoding.GetString(TargetStream.ToArray());
 			}
 		}
 
 
-		public string CreateReportForActivityReportItem (ActivityReportItem ParentReportItem, int NestingLevel)
-		{
-			//
-			// CREATE THE REPORT LINE ITEM FOR THE PARENT.
-			//
-			StringBuilder ReportBuilder = new StringBuilder();
-			ReportBuilder.AppendLine(CreateReportLineItem(ParentReportItem, NestingLevel));
-		
-			//
-			// CREATE A SUMMARY LINE ITEM FOR EACH CHILD.
-			//
-			ActivityReportItemListMap CreatedListMap = new ActivityReportItemListMap();
-			CreatedListMap.AddRange(ParentReportItem.ChildReportItems);
-
-			foreach (string ChildActivityName in ActivityNamesArrayFactory.CreateArrayOfUniqueActivityNames(ParentReportItem.ChildReportItems))
-			{
-				//
-				// GET THE LIST OF CHILD ACTIVITIES.
-				//
-				ActivityReportItemList ChildActivityList = CreatedListMap[ChildActivityName];
-				
-				if (ChildActivityList.Count > 1)
-				{
-					//
-					// CREATE THE AGGREGATE RECORD.
-					//
-					ActivityReportAggregateItem CreatedAggregateItem = new ActivityReportAggregateItem();
-					CreatedAggregateItem.ActivityName = ChildActivityName;
-					CreatedAggregateItem.Count = ChildActivityList.Count;
-					CreatedAggregateItem.TotalDuration = ActivityReportItemCalculator.TotalDuration(ChildActivityList);
-					CreatedAggregateItem.MaxDuration = ActivityReportItemCalculator.MaxDuration(ChildActivityList);
-					CreatedAggregateItem.AvgDuration = ActivityReportItemCalculator.AvgDuration(ChildActivityList);
-					CreatedAggregateItem.MinDuration = ActivityReportItemCalculator.MinDuration(ChildActivityList);
-					
-					//
-					// CREATE THE LINE ITEM FOR THE AGGREGATE RECORD.
-					//
-					ReportBuilder.AppendLine(CreateLineItemForAggregate(CreatedAggregateItem, NestingLevel + 1));
-				}
-			}
-		
-			//
-			// CREATE THE REPORT LINE ITEMS FOR THE CHILDREN.
-			//
-			foreach (ActivityReportItem CurrentChildReportItem in ParentReportItem.ChildReportItems)
-			{
-				ReportBuilder.Append(CreateReportForActivityReportItem(CurrentChildReportItem, NestingLevel + 1));
-			}
-			
-			return ReportBuilder.ToString();
-		}
-
-
-		public string CreateLineItemForAggregate (ActivityReportAggregateItem AggregateItemParam, int NestingLevel)
-		{
-			//
-			// 6. CopySectorFactor: summary, count: 42, avg: 2ms, max: 40 ms, min: 0 ms, total: 44 ms.
-			//
-			StringBuilder LineItemBuilder = new StringBuilder();
-			
-			//
-			// APPLY INDENTATION.
-			//
-			for (int i = 0; i < NestingLevel; i++)
-				LineItemBuilder.Append("\t");
-
-			//
-			// ACTIVITY NAME.
-			//
-			LineItemBuilder.AppendFormat("+ {0}: [", AggregateItemParam.ActivityName);
-			
-			//
-			// TOTAL DURATION.
-			//
-			LineItemBuilder.AppendFormat("total: {0} ms,", AggregateItemParam.TotalDuration.Value.TotalMilliseconds.ToString("N0"));
-
-			//
-			// AVERAGE.
-			//
-			LineItemBuilder.AppendFormat(" avg: {0} ms,", AggregateItemParam.AvgDuration.Value.TotalMilliseconds.ToString("N0"));
-
-			//
-			// COUNT.
-			//
-			LineItemBuilder.AppendFormat(" count: {0},", AggregateItemParam.Count);
-
-			//
-			// MAX.
-			//
-			LineItemBuilder.AppendFormat(" max: {0} ms,", AggregateItemParam.MaxDuration.Value.TotalMilliseconds.ToString("N0"));
-
-			//
-			// MIN.
-			//
-			LineItemBuilder.AppendFormat(" min: {0} ms]", AggregateItemParam.MinDuration.Value.TotalMilliseconds.ToString("N0"));
-
-			return LineItemBuilder.ToString();
-		}
+		/// <summary>
+		/// Creates and writes the report to the target stream.
+		/// </summary>
+		public abstract void WriteReport ();
 		
 		
-		public string CreateReportLineItem (ActivityReportItem ActivityReportItemParam, int NestingLevel)
-		{
-			StringBuilder LineItemBuilder = new StringBuilder();
-			
-			//
-			// INDENT.
-			//
-			for (int i = 0; i < NestingLevel; i++)
-				LineItemBuilder.Append("\t");
-			
-			//
-			// SEQUENCE NUMBER.
-			//
-			if (_ShowSequenceNumber != null && _ShowSequenceNumber.Value)
-				LineItemBuilder.AppendFormat("{0}. ", ActivityReportItemParam.StartPoint.SequenceNumber);
-			
-			//
-			// ACTIVITY NAME.
-			//
-			LineItemBuilder.Append(ActivityReportItemParam.ActivityName);
-			LineItemBuilder.Append(": ");
-			
-			//
-			// DURATION.
-			//
-			LineItemBuilder.Append(ActivityReportItemParam.Duration == null ? "?" : ActivityReportItemParam.Duration.Value.TotalMilliseconds.ToString("N0"));
-			LineItemBuilder.Append(" ms.");
-			
-			return LineItemBuilder.ToString();
-		}
-		
-		
+		/// <summary>
+		/// Sets the performance marker to use for report generation.
+		/// </summary>
 		public Marker PerformanceMarker
 		{
 			set
@@ -196,6 +62,9 @@ namespace PerformanceMarkers
 		}
 		
 		
+		/// <summary>
+		/// Set to true to show sequence numbers of every activity point in the report.
+		/// </summary>
 		public bool? ShowSequenceNumber
 		{
 			set
@@ -205,6 +74,9 @@ namespace PerformanceMarkers
 		}
 		
 		
+		/// <summary>
+		/// Sets the stream to write the report to.
+		/// </summary>
 		public Stream TargetStream
 		{
 			set
@@ -214,11 +86,25 @@ namespace PerformanceMarkers
 		}
 
 
+		/// <summary>
+		/// Sets the text encoding to use for the report.
+		/// The default is UTF8.
+		/// </summary>
+		public Encoding Encoding
+		{
+			set
+			{
+				_Encoding = value;
+			}
+		}
+
+
 		//
 		// INPUT FIELDS.
 		//	
-		private ActivityPoint[] _ActivityPoints;
-		private Stream _TargetStream;
-		private bool? _ShowSequenceNumber;
+		protected ActivityPoint[] _ActivityPoints;
+		protected Stream _TargetStream;
+		protected bool? _ShowSequenceNumber;
+		protected Encoding _Encoding;
 	}
 }

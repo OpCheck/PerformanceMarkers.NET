@@ -14,7 +14,7 @@ namespace PerformanceMarkers
 		/// </summary>
 		public static Marker CreateMarker (MarkerType MarkerTypeParam)
 		{
-			return (Marker)Activator.CreateInstance(null, String.Format("PerformanceMarkers.{0}Marker", MarkerTypeParam)).Unwrap();
+			return (Marker)Activator.CreateInstance(null, String.Format("PerformanceMarkers.Markers.{0}Marker", MarkerTypeParam)).Unwrap();
 		}
 
 
@@ -52,6 +52,5 @@ namespace PerformanceMarkers
 			CreatedMarker.Start();
 			return CreatedMarker;
 		}
-		
 	}
 }
