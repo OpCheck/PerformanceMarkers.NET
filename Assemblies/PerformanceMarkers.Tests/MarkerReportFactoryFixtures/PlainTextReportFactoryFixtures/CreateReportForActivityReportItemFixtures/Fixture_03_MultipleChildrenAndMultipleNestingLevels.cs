@@ -6,7 +6,7 @@ using MbUnit.Framework;
 using PerformanceMarkers;
 using PerformanceMarkers.MarkerReportFactories;
 
-namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.CreateReportForActivityReportItemFixtures
+namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.PlainTextReportFactoryFixtures.CreateReportForActivityReportItemFixtures
 {
 	[TestFixture]
 	public class Fixture_03_MultipleChildrenAndMultipleNestingLevels

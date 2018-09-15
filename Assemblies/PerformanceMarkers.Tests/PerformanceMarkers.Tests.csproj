@@ -70,11 +70,12 @@
     <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_03_SingleNestedActivity.cs" />
     <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_01_MarkerStack.cs" />
     <Compile Include="ActivityReportItemTreeFactoryFixtures\CreateReportItemTreeFixtures\Fixture_00_EmptyStack.cs" />
-    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_03_MultipleChildrenAndMultipleNestingLevels.cs" />
-    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_02_MultipleNestingLevels.cs" />
-    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_01_MultipleMarkerChildren.cs" />
-    <Compile Include="MarkerReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_00_SingleMarkerChild.cs" />
-    <Compile Include="MarkerReportFactoryFixtures\CreateReportFixtures\Fixture_10_MultipleLevelsOfNesting.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\PlainTextReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_03_MultipleChildrenAndMultipleNestingLevels.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\PlainTextReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_02_MultipleNestingLevels.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\PlainTextReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_01_MultipleMarkerChildren.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\PlainTextReportFactoryFixtures\CreateReportForActivityReportItemFixtures\Fixture_00_SingleMarkerChild.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\PlainTextReportFactoryFixtures\CreateReportFixtures\Fixture_10_MultipleLevelsOfNesting.cs" />
+    <Compile Include="MarkerReportFactoryFixtures\XmlReportFactoryFixtures\CreateReportFixtures\Fixture_10_MultipleLevelsOfNesting.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PerformanceMarkers\PerformanceMarkers.csproj">

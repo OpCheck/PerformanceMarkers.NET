@@ -13,6 +13,12 @@ namespace PerformanceMarkers.MarkerReportFactories
 		public PlainTextReportFactory () : base()
 		{
 		}
+
+
+		public override string CreateDisabledReport (Marker CurrentMarker)
+		{
+			return "";
+		}
 	
 	
 		public override void WriteReport ()
@@ -53,10 +59,11 @@ namespace PerformanceMarkers.MarkerReportFactories
 			ReportBuilder.AppendLine(CreateReportLineItem(ParentReportItem, NestingLevel));
 		
 			//
-			// CREATE A SUMMARY LINE ITEM FOR EACH CHILD.
+			// CREATE A SUMMARY ELEMENT FOR EACH CHILD ACCORDING TO THE SPECIFIED CONFIGURATION.
 			//
 			ActivityReportItemListMap CreatedListMap = new ActivityReportItemListMap();
 			CreatedListMap.AddRange(ParentReportItem.ChildReportItems);
+			string[] ChildActivityNames = ActivityNamesArrayFactory.CreateArrayOfUniqueActivityNames(ParentReportItem.ChildReportItems);
 
 			foreach (string ChildActivityName in ActivityNamesArrayFactory.CreateArrayOfUniqueActivityNames(ParentReportItem.ChildReportItems))
 			{
@@ -65,7 +72,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 				//
 				ActivityReportItemList ChildActivityList = CreatedListMap[ChildActivityName];
 				
-				if (ChildActivityList.Count > 1)
+				if (_ShowAllSummaries || ChildActivityList.Count > 1)
 				{
 					//
 					// CREATE THE AGGREGATE RECORD.
@@ -90,7 +97,13 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			foreach (ActivityReportItem CurrentChildReportItem in ParentReportItem.ChildReportItems)
 			{
-				ReportBuilder.Append(CreateReportForActivityReportItem(CurrentChildReportItem, NestingLevel + 1));
+				if (_ShowAllActivities || CurrentChildReportItem.ChildReportItems.Length > 0)
+				{
+					//
+					// SHOW THE CHILD ACTIVITY IF IT'S FORCED TO BE SHOWN OR IF IT'S A PARENT ITSELF.
+					//
+					ReportBuilder.Append(CreateReportForActivityReportItem(CurrentChildReportItem, NestingLevel + 1));
+				}
 			}
 			
 			return ReportBuilder.ToString();
@@ -99,9 +112,6 @@ namespace PerformanceMarkers.MarkerReportFactories
 
 		public string CreateLineItemForAggregate (ActivityReportAggregateItem AggregateItemParam, int NestingLevel)
 		{
-			//
-			// 6. CopySectorFactor: summary, count: 42, avg: 2ms, max: 40 ms, min: 0 ms, total: 44 ms.
-			//
 			StringBuilder LineItemBuilder = new StringBuilder();
 			
 			//
@@ -113,32 +123,32 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// ACTIVITY NAME.
 			//
-			LineItemBuilder.AppendFormat("+ {0}: [", AggregateItemParam.ActivityName);
-			
-			//
-			// TOTAL DURATION.
-			//
-			LineItemBuilder.AppendFormat("total: {0} ms,", AggregateItemParam.TotalDuration.Value.TotalMilliseconds.ToString("N0"));
-
-			//
-			// AVERAGE.
-			//
-			LineItemBuilder.AppendFormat(" avg: {0} ms,", AggregateItemParam.AvgDuration.Value.TotalMilliseconds.ToString("N0"));
+			LineItemBuilder.AppendFormat("+ {0} [", AggregateItemParam.ActivityName);
 
 			//
 			// COUNT.
 			//
-			LineItemBuilder.AppendFormat(" count: {0},", AggregateItemParam.Count);
+			LineItemBuilder.AppendFormat("count: {0},", AggregateItemParam.Count);
+			
+			//
+			// AVERAGE.
+			//
+			LineItemBuilder.AppendFormat(" avg: {0},", AggregateItemParam.AvgDuration.Value.TotalMilliseconds.ToString("N0"));
+
+			//
+			// TOTAL DURATION.
+			//
+			LineItemBuilder.AppendFormat(" total: {0},", AggregateItemParam.TotalDuration.Value.TotalMilliseconds.ToString("N0"));
 
 			//
 			// MAX.
 			//
-			LineItemBuilder.AppendFormat(" max: {0} ms,", AggregateItemParam.MaxDuration.Value.TotalMilliseconds.ToString("N0"));
+			LineItemBuilder.AppendFormat(" max: {0},", AggregateItemParam.MaxDuration.Value.TotalMilliseconds.ToString("N0"));
 
 			//
 			// MIN.
 			//
-			LineItemBuilder.AppendFormat(" min: {0} ms]", AggregateItemParam.MinDuration.Value.TotalMilliseconds.ToString("N0"));
+			LineItemBuilder.AppendFormat(" min: {0}]", AggregateItemParam.MinDuration.Value.TotalMilliseconds.ToString("N0"));
 
 			return LineItemBuilder.ToString();
 		}
@@ -157,20 +167,20 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// SEQUENCE NUMBER.
 			//
-			if (_ShowSequenceNumber != null && _ShowSequenceNumber.Value)
+			if (_ShowSequenceNumbers)
 				LineItemBuilder.AppendFormat("{0}. ", ActivityReportItemParam.StartPoint.SequenceNumber);
 			
 			//
 			// ACTIVITY NAME.
 			//
 			LineItemBuilder.Append(ActivityReportItemParam.ActivityName);
-			LineItemBuilder.Append(": ");
+			LineItemBuilder.Append(" [total: ");
 			
 			//
 			// DURATION.
 			//
 			LineItemBuilder.Append(ActivityReportItemParam.Duration == null ? "?" : ActivityReportItemParam.Duration.Value.TotalMilliseconds.ToString("N0"));
-			LineItemBuilder.Append(" ms.");
+			LineItemBuilder.Append("].");
 			
 			return LineItemBuilder.ToString();
 		}

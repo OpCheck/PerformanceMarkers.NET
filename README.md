@@ -2,6 +2,23 @@
 
 Integrated performance metrics for building the fastest .NET applications known to man.
 
+## Overview
+
+There are several methods to measure performance of an application or component.  Most of these methods are external, expensive, and difficult to set up and use.
+
+We prefer the integrated performance metrics approach - where the performance tracking and reporting is a fundamental part of the application itself.  It is highly accurate and much easier to use.
+
+## Performance Reports
+
+
+
+## Performance Report Formats
+
+You can export to the following media types:
+
+* Text - a human-readable hierarchy of activities with summaries of how long each activity took to complete.
+* XML - same as the text format, except you can also easily load it using any XML parser.
+
 ## Usage
 
 	using PerformanceMarkers;
@@ -9,7 +26,7 @@ Integrated performance metrics for building the fastest .NET applications known 
 	//
  	// CREATE THE PERFORMANCE MARKER FOR THIS PROCESS.
 	//
-	Marker CreatedMarker = MarkerFactory.StartMarker("ProcessName");
+	Marker CreatedMarker = MarkerFactory.StartMarkerWithTypeAndName("Enabled", "ProcessName");
 
 	//
  	// RUN A DATABASE QUERY OR DO SOME NETWORK I/O.
@@ -28,7 +45,7 @@ Integrated performance metrics for building the fastest .NET applications known 
 	//
 	// CREATE THE PERFORMANCE REPORT.
 	//
-	string PerformanceReport = MarkerReportFactory.CreateReport(CreatedMarker);
+	string PerformanceReport = MarkerReportFactoryProvider.CreateReportFactory().CreateReport(CreatedMarker);
 
 	//
 	// OUTPUT THE REPORT WHEREVER YOU WANT.  IT'S JUST A STRING.
@@ -48,3 +65,5 @@ Here is a sample report from a database-intensive financial analytics program:
 		BatchCommit: 5,252 ms.
 		BatchCommit: 6,040 ms.
 		LastBatchCommit: 4,164 ms.
+
+Look at this report gives us a summary of how long each batch took to commit in the database, as well as the length of our queries.

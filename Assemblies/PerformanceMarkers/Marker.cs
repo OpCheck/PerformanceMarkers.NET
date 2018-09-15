@@ -91,6 +91,9 @@ namespace PerformanceMarkers
 		}
 		
 		
+		/// <summary>
+		/// Returns true if the marker is disabled, false otherwise.
+		/// </summary>
 		public bool IsDisabled
 		{
 			get
@@ -100,6 +103,9 @@ namespace PerformanceMarkers
 		}
 
 
+		/// <summary>
+		/// Returns true if the marker is enabled, false otherwise.
+		/// </summary>
 		public bool IsEnabled
 		{
 			get
@@ -110,7 +116,7 @@ namespace PerformanceMarkers
 	
 
 		/// <summary>
-		/// Gets the set of activity points from this marker.
+		/// Gets the activity points from this marker.
 		/// </summary>
 		public ActivityPoint[] ActivityPoints
 		{
@@ -121,6 +127,10 @@ namespace PerformanceMarkers
 		}
 
 
+		/// <summary>
+		/// Gets and sets the failure mode for the performance marker.
+		/// This mode applies to both the marker itself and all downstream components that process it.
+		/// </summary>
 		public MarkerFailureMode FailureMode
 		{
 			get

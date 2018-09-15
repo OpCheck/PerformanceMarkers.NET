@@ -8,13 +8,18 @@ using PerformanceMarkers.Printers;
 namespace PerformanceMarkers
 {
 	/// <summary>
-	/// Creates a human-readable performance report in a condensed text format.
+	/// Creates a performance report in a string representation.
+	/// This could be plain text, XML or JSON.
+	/// This class is not thread-safe.  Do not share instances of it between threads.
 	/// </summary>
 	public abstract class MarkerReportFactory
 	{
 		public MarkerReportFactory ()
 		{
 			_Encoding = Encoding.UTF8;
+			_ShowAllSummaries = true;
+			_ShowAllActivities = false;
+			_ShowSequenceNumbers = false;
 		}
 
 
@@ -29,19 +34,22 @@ namespace PerformanceMarkers
 			// IF THIS MARKER IS DISABLED THEN WE DO NOT CREATE A REPORT FOR IT.
 			//
 			if (CurrentMarker.IsDisabled)
-				return "";
+				return CreateDisabledReport(CurrentMarker);
 			
 			//
 			// CREATE THE REPORT.
 			//
 			using (MemoryStream TargetStream = new MemoryStream())
 			{
-				_ActivityPoints = CurrentMarker.ActivityPoints;
+				PerformanceMarker = CurrentMarker;
 				_TargetStream = TargetStream;
 				WriteReport();
 				return _Encoding.GetString(TargetStream.ToArray());
 			}
 		}
+		
+		
+		public abstract string CreateDisabledReport (Marker CurrentMarker);
 
 
 		/// <summary>
@@ -57,6 +65,7 @@ namespace PerformanceMarkers
 		{
 			set
 			{
+				_Marker = value;
 				_ActivityPoints = value.ActivityPoints;
 			}
 		}
@@ -64,12 +73,39 @@ namespace PerformanceMarkers
 		
 		/// <summary>
 		/// Set to true to show sequence numbers of every activity point in the report.
+		/// By default, we do not show sequence numbers.
 		/// </summary>
-		public bool? ShowSequenceNumber
+		public bool ShowSequenceNumbers
 		{
 			set
 			{
-				_ShowSequenceNumber = value;
+				_ShowSequenceNumbers = value;
+			}
+		}
+
+
+		/// <summary>
+		/// Set to true to always show a summary for every child activity point.
+		/// By default, this is true.
+		/// </summary>
+		public bool ShowAllSummaries
+		{
+			set
+			{
+				_ShowAllSummaries = value;
+			}
+		}
+
+
+		/// <summary>
+		/// Set to true to always show every child activity point.
+		/// By default, this is false.
+		/// </summary>
+		public bool ShowAllActivities
+		{
+			set
+			{
+				_ShowAllActivities = value;
 			}
 		}
 		
@@ -103,8 +139,11 @@ namespace PerformanceMarkers
 		// INPUT FIELDS.
 		//	
 		protected ActivityPoint[] _ActivityPoints;
+		protected Marker _Marker;
 		protected Stream _TargetStream;
-		protected bool? _ShowSequenceNumber;
+		protected bool _ShowSequenceNumbers;
+		protected bool _ShowAllSummaries;
+		protected bool _ShowAllActivities;
 		protected Encoding _Encoding;
 	}
 }

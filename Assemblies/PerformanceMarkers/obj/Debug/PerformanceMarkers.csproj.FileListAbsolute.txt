@@ -1,5 +1,0 @@
-C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers\obj\Debug\ResolveAssemblyReference.cache
-C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers\bin\Debug\PerformanceMarkers.dll
-C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers\bin\Debug\PerformanceMarkers.pdb
-C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers\obj\Debug\PerformanceMarkers.dll
-C:\Projects\PerformanceMarkers.NET\Assemblies\PerformanceMarkers\obj\Debug\PerformanceMarkers.pdb
