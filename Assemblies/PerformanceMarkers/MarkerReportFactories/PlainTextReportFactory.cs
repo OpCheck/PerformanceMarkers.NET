@@ -53,11 +53,16 @@ namespace PerformanceMarkers.MarkerReportFactories
 		public string CreateReportForActivityReportItem (ActivityReportItem ParentReportItem, int NestingLevel)
 		{
 			//
+			// NOW THAT THIS REPORT ITEM HAS ALL OF ITS CHILDREN WE CAN CALCULATE THE HIDDEN PROCESSING TIME.
+			//
+			ParentReportItem.HiddenDuration = ActivityReportItemCalculator.HiddenDuration(ParentReportItem);
+		
+			//
 			// CREATE THE REPORT LINE ITEM FOR THE PARENT.
 			//
 			StringBuilder ReportBuilder = new StringBuilder();
 			ReportBuilder.AppendLine(CreateReportLineItem(ParentReportItem, NestingLevel));
-		
+			
 			//
 			// CREATE A SUMMARY ELEMENT FOR EACH CHILD ACCORDING TO THE SPECIFIED CONFIGURATION.
 			//
@@ -65,7 +70,10 @@ namespace PerformanceMarkers.MarkerReportFactories
 			CreatedListMap.AddRange(ParentReportItem.ChildReportItems);
 			string[] ChildActivityNames = ActivityNamesArrayFactory.CreateArrayOfUniqueActivityNames(ParentReportItem.ChildReportItems);
 
-			foreach (string ChildActivityName in ActivityNamesArrayFactory.CreateArrayOfUniqueActivityNames(ParentReportItem.ChildReportItems))
+			//
+			// CREATE THE AGGREGATE RECORD LINE ITEMS.
+			//
+			foreach (string ChildActivityName in ChildActivityNames)
 			{
 				//
 				// GET THE LIST OF CHILD ACTIVITIES.
@@ -93,7 +101,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			}
 		
 			//
-			// CREATE THE REPORT LINE ITEMS FOR THE CHILDREN.
+			// CREATE THE REPORT LINE ITEMS FOR THE CHILD ACTIVITIES.
 			//
 			foreach (ActivityReportItem CurrentChildReportItem in ParentReportItem.ChildReportItems)
 			{
@@ -128,7 +136,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// COUNT.
 			//
-			LineItemBuilder.AppendFormat("count: {0},", AggregateItemParam.Count.ToString(MarkerReportFactoryDefaults.CountDisplayFormatCode));
+			LineItemBuilder.AppendFormat("count: {0};", AggregateItemParam.Count.ToString(MarkerReportFactoryDefaults.CountDisplayFormatCode));
 			
 			//
 			// TOTAL DURATION.
@@ -145,18 +153,18 @@ namespace PerformanceMarkers.MarkerReportFactories
 			}
 			else
 			{
-				LineItemBuilder.Append(",");
+				LineItemBuilder.Append(";");
 
 				//
 				// AVERAGE.
 				//
-				LineItemBuilder.AppendFormat(" avg: {0},", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
+				LineItemBuilder.AppendFormat(" avg: {0};", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
 
 
 				//
 				// MAX.
 				//
-				LineItemBuilder.AppendFormat(" max: {0},", AggregateItemParam.MaxDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+				LineItemBuilder.AppendFormat(" max: {0};", AggregateItemParam.MaxDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 				//
 				// MIN.
@@ -171,7 +179,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 		public string CreateReportLineItem (ActivityReportItem ActivityReportItemParam, int NestingLevel)
 		{
 			StringBuilder LineItemBuilder = new StringBuilder();
-			
+
 			//
 			// INDENT.
 			//
@@ -192,7 +200,12 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// TOTAL DURATION.
 			//
-			LineItemBuilder.AppendFormat(" [total: {0} ms].", ActivityReportItemParam.Duration == null ? "?" : ActivityReportItemParam.Duration.Value.TotalMilliseconds.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+			LineItemBuilder.AppendFormat(" [total: {0} ms;", ActivityReportItemParam.Duration == null ? "?" : ActivityReportItemParam.Duration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+			
+			//
+			// HIDDEN DURATION.
+			//
+			LineItemBuilder.AppendFormat(" hidden: {0}].", ActivityReportItemParam.HiddenDuration == null ? "?" : ActivityReportItemParam.HiddenDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
 			return LineItemBuilder.ToString();
 		}

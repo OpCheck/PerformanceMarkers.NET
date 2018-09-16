@@ -75,7 +75,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			// DURATION.
 			//
 			if (ParentReportItem.Duration != null)
-				ActivityReportElement.SetAttribute("Duration", ParentReportItem.Duration.Value.TotalMilliseconds.ToString());
+				ActivityReportElement.SetAttribute("Duration", ParentReportItem.Duration.Value.ToString());
 			
 			//
 			// DESCRIPTION.

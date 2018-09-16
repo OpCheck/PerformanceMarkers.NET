@@ -25,7 +25,7 @@ namespace PerformanceMarkers
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
 				if (CurrentItem.Duration != null)
-					DurationCalculation += CurrentItem.Duration.Value.TotalMilliseconds;
+					DurationCalculation += CurrentItem.Duration.Value;
 			}
 			
 			return DurationCalculation;
@@ -38,8 +38,8 @@ namespace PerformanceMarkers
 			
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
-				if (CurrentItem.Duration != null && CurrentItem.Duration.Value.TotalMilliseconds > DurationCalculation)
-					DurationCalculation = CurrentItem.Duration.Value.TotalMilliseconds;
+				if (CurrentItem.Duration != null && CurrentItem.Duration.Value > DurationCalculation)
+					DurationCalculation = CurrentItem.Duration.Value;
 			}
 			
 			return DurationCalculation;
@@ -52,8 +52,8 @@ namespace PerformanceMarkers
 			
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
-				if (CurrentItem.Duration != null && CurrentItem.Duration.Value.TotalMilliseconds < DurationCalculation)
-					DurationCalculation = CurrentItem.Duration.Value.TotalMilliseconds;
+				if (CurrentItem.Duration != null && CurrentItem.Duration.Value < DurationCalculation)
+					DurationCalculation = CurrentItem.Duration.Value;
 			}
 			
 			return DurationCalculation;
@@ -63,6 +63,23 @@ namespace PerformanceMarkers
 		public static double AvgDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
 			return TotalDuration(ActivityReportItems) / Count(ActivityReportItems);
+		}
+		
+		
+		public static double? HiddenDuration (ActivityReportItem ParentReportItem)
+		{
+			if (ParentReportItem.Duration == null)
+				return null;
+		
+			double HiddenDuration = ParentReportItem.Duration.Value;
+			
+			foreach (ActivityReportItem CurrentChildReportItem in ParentReportItem.ChildReportItems)
+			{
+				if (CurrentChildReportItem.Duration != null)
+					HiddenDuration -= CurrentChildReportItem.Duration.Value;
+			}
+			
+			return HiddenDuration;
 		}
 	}
 }

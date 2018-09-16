@@ -29,7 +29,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.PlainTextReportFa
 			{
 				ActivityReportItem CreatedReportItem = new ActivityReportItem();
 				CreatedReportItem.ActivityName = "R";
-				CreatedReportItem.Duration = new TimeSpan(0, 0, 1);
+				CreatedReportItem.Duration = 1000d;
 				
 				CreatedReportItem.StartPoint = new ActivityPoint();
 				CreatedReportItem.StartPoint.ActivityName = CreatedReportItem.ActivityName;
@@ -55,7 +55,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.PlainTextReportFa
 			{
 				ActivityReportItem CreatedReportItem = new ActivityReportItem();
 				CreatedReportItem.ActivityName = "Q";
-				CreatedReportItem.Duration = new TimeSpan(0, 0, 1);
+				CreatedReportItem.Duration = 1000d;
 				
 				CreatedReportItem.StartPoint = new ActivityPoint();
 				CreatedReportItem.StartPoint.ActivityName = CreatedReportItem.ActivityName;
@@ -81,7 +81,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.PlainTextReportFa
 			{
 				ActivityReportItem CreatedReportItem = new ActivityReportItem();
 				CreatedReportItem.ActivityName = "P";
-				CreatedReportItem.Duration = new TimeSpan(0, 0, 1);
+				CreatedReportItem.Duration = 1000d;
 				
 				CreatedReportItem.StartPoint = new ActivityPoint();
 				CreatedReportItem.StartPoint.ActivityName = CreatedReportItem.ActivityName;
@@ -104,7 +104,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.PlainTextReportFa
 			//
 			ActivityReportItem ParentReportItem = new ActivityReportItem();
 			ParentReportItem.ActivityName = "Marker";
-			ParentReportItem.Duration = new TimeSpan(0, 0, 1);
+			ParentReportItem.Duration = 1000d;
 			
 			ParentReportItem.StartPoint = new ActivityPoint();
 			ParentReportItem.StartPoint.ActivityName = "Marker";

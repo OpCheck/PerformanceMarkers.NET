@@ -117,7 +117,7 @@ namespace PerformanceMarkers.Tests.ActivityReportItemTreeFactoryFixtures.CreateR
 			Assert.AreEqual(_MarkerReportItem.ActivityName, "CreatedMarker");
 
 			Assert.IsNotNull(_MarkerReportItem.Duration);
-			Assert.AreEqual(_MarkerReportItem.Duration.Value.TotalSeconds, 7d);
+			Assert.AreEqual(_MarkerReportItem.Duration.Value, 7000d);
 
 			Assert.IsNotNull(_MarkerReportItem.StartPoint);
 			Assert.AreEqual(_MarkerReportItem.StartPoint.PointType, ActivityPointType.Start);

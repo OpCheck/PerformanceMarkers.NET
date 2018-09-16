@@ -72,7 +72,7 @@ namespace PerformanceMarkers.Tests.ActivityReportItemTreeFactoryFixtures.CreateR
 		public void Test_Duration ()
 		{
 			Assert.IsNotNull(_ReportItem.Duration);
-			Assert.AreEqual(_ReportItem.Duration.Value.TotalSeconds, 1d);
+			Assert.AreEqual(_ReportItem.Duration.Value, 1000d);
 		}
 
 

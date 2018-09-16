@@ -5,7 +5,8 @@ namespace PerformanceMarkers
 	public class ActivityReportItem
 	{
 		public string ActivityName;
-		public TimeSpan? Duration;
+		public double? Duration;
+		public double? HiddenDuration;
 		public string DurationFormatCode;
 		public string Desc;
 		public Granularity Granularity;
