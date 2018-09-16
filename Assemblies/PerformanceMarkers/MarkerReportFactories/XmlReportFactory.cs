@@ -75,7 +75,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			// DURATION.
 			//
 			if (ParentReportItem.Duration != null)
-				ActivityReportElement.SetAttribute("Duration", ParentReportItem.Duration.Value.TotalMilliseconds.ToString("N00"));
+				ActivityReportElement.SetAttribute("Duration", ParentReportItem.Duration.Value.TotalMilliseconds.ToString());
 			
 			//
 			// DESCRIPTION.
@@ -188,7 +188,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			// CREATE THE CHILD ACTIVITIES ELEMENT.
 			//
 			XmlElement ChildActivitiesElement = _MarkerReportDocument.CreateElement("ChildActivities");
-			//ChildActivitiesElement.SetAttribute("Count", ParentReportItem.ChildReportItems.Length.ToString("N00"));
+			//ChildActivitiesElement.SetAttribute("Count", ParentReportItem.ChildReportItems.Length.ToString());
 			ActivityReportElement.AppendChild(ChildActivitiesElement);
 
 			//
@@ -267,31 +267,31 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// COUNT.
 			//
-			ActivityReportAggregateElement.SetAttribute("Count", AggregateItemParam.Count.ToString());
+			ActivityReportAggregateElement.SetAttribute("Count", AggregateItemParam.Count.ToString(MarkerReportFactoryDefaults.CountDisplayFormatCode));
 
 			//
 			// TOTAL DURATION.
 			//
 			if (AggregateItemParam.TotalDuration != null)
-				ActivityReportAggregateElement.SetAttribute("TotalDuration", AggregateItemParam.TotalDuration.Value.TotalMilliseconds.ToString("N00"));
+				ActivityReportAggregateElement.SetAttribute("TotalDuration", AggregateItemParam.TotalDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			//
 			// MAX DURATION.
 			//
 			if (AggregateItemParam.MaxDuration != null)
-				ActivityReportAggregateElement.SetAttribute("MaxDuration", AggregateItemParam.MaxDuration.Value.TotalMilliseconds.ToString("N00"));
+				ActivityReportAggregateElement.SetAttribute("MaxDuration", AggregateItemParam.MaxDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			//
 			// AVERAGE DURATION.
 			//
 			if (AggregateItemParam.AvgDuration != null)
-				ActivityReportAggregateElement.SetAttribute("AvgDuration", AggregateItemParam.AvgDuration.Value.TotalMilliseconds.ToString("N00"));
+				ActivityReportAggregateElement.SetAttribute("AvgDuration", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
 
 			//
 			// MIN DURATION.
 			//
 			if (AggregateItemParam.MinDuration != null)
-				ActivityReportAggregateElement.SetAttribute("MinDuration", AggregateItemParam.MinDuration.Value.TotalMilliseconds.ToString("N00"));
+				ActivityReportAggregateElement.SetAttribute("MinDuration", AggregateItemParam.MinDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
 			return ActivityReportAggregateElement;
 		}

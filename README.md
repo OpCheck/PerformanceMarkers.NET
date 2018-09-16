@@ -4,55 +4,58 @@ Integrated performance metrics for building the fastest .NET applications known 
 
 ## Overview & Motivation
 
-A lightweight .NET library that helps you:
+A lightweight and extremely easy-to-use .NET library that helps you:
 
 * precisely expose where the bottlenecks are in your application.
-* prove (or disprove) the performance impact of changes applied.
-* methodically increase your application's performance.
+* prove (or disprove) the performance impact of changes applied.  We call this the **Tuning Process**.
+* methodically increase your application's performance over time.
 
-We call this the **integrated performance metrics** approach - where the performance tracking and reporting is a part of the application itself.  We believe that collecting these metrics should be a fundamental part of the software development process due to the positive quality impact it has.
+How we do this is simple: you insert performance collection statements directly into your code - very similar to how you insert logging statements.  In effect,  measuring performance becomes a function of the application itself.  We call this the **Integrated Performance Metrics Approach**.
+
+We believe that collecting these metrics should be a fundamental part of the software development process due to the enormously positive quality impact it has.
 
 Since the performance metrics collection is integrated into your program - and at some point your program may be deployed to a production environment - we provide ways to disable this library.  This makes it similar to a logging framework where you want it to be less "chatty" in production scenarios.
 
-PerformanceMarkers.NET is already used in production environments across several industries (credit card processing, financial analytics) for applications that have to be measured in milliseconds.
+**PerformanceMarkers.NET** is already used in production environments across several industries (credit card processing, financial analytics) for applications that have to be measured in milliseconds.
 
 ## Usage
 
-Let's jump right in and show you some code, with comments.  We will go into much further detail later.
+Let's jump right in and show you some code, with some comments to illustrate what is going on.  We will go into much further detail later.
 
 	//
 	// REFERENCE THE PERFORMANCE MARKERS NAMESPACE.
-	// THIS IS THE ONLY NAMESPACE YOU NEED.
-	// IT IS SIMPLE AND SHORT - UNLIKE THESE LONG COMMENTS.
 	//
 	using PerformanceMarkers;
 
 	//
- 	// CREATE AN ENABLED PERFORMANCE MARKER NAMED 'MyProcessName'.
+ 	// CREATE A PERFORMANCE MARKER NAMED 'MyProcessName'.
 	//
-	Marker CreatedMarker = MarkerFactory.StartMarkerWithTypeAndName("Enabled", "ProcessName");
+	Marker CreatedMarker = MarkerFactory.StartMarker("ProcessName");
 
 	//
- 	// RUN A DATABASE QUERY OR DO SOME NETWORK I/O.
+ 	// START TIMING AN ACTIVITY NAMED 'Query'.
 	//
-	CreatedMarker.Start("Query"); // START A PRETEND QUERY.
+	CreatedMarker.Start("Query");
 
 	Thread.Sleep(577);
 
-	CreatedMarker.End("Query"); // END THE PRETEND QUERY.
+	//
+	// STOP TIMING THE ACTIVITY.
+	//
+	CreatedMarker.End("Query");
 
 	//
-	// END PERFORMANCE TRACKING FOR THIS PROCESS.
+	// STOP TIMING THE PROCESS.
 	//
 	CreatedMarker.End();
 
 	//
-	// CREATE THE PERFORMANCE REPORT.
+	// CREATE A PLAIN-TEXT PERFORMANCE REPORT.
 	//
 	string PerformanceReport = MarkerReportFactoryProvider.CreateReportFactory().CreateReport(CreatedMarker);
 
 	//
-	// OUTPUT THE REPORT WHEREVER YOU WANT.  IT'S JUST A STRING.
+	// VIEW THE REPORT.
 	//
 	Console.WriteLine(PerformanceReport);
 

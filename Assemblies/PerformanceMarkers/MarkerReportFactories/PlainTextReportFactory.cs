@@ -27,7 +27,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			// NORMALIZE THE ACTIVITY POINTS SO ALL ACTIVITIES WITH A START POINT HAVE AN EXPLICIT END POINT.
 			//
 			ActivityPointStack NormalizedPointStack = ActivityPointListNormalizer.Normalize(_ActivityPoints);
-			
+
 			//
 			// CREATE THE ACTIVITY REPORT ITEM TREE.
 			//
@@ -128,27 +128,41 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// COUNT.
 			//
-			LineItemBuilder.AppendFormat("count: {0},", AggregateItemParam.Count);
+			LineItemBuilder.AppendFormat("count: {0},", AggregateItemParam.Count.ToString(MarkerReportFactoryDefaults.CountDisplayFormatCode));
 			
-			//
-			// AVERAGE.
-			//
-			LineItemBuilder.AppendFormat(" avg: {0},", AggregateItemParam.AvgDuration.Value.TotalMilliseconds.ToString("N0"));
-
 			//
 			// TOTAL DURATION.
 			//
-			LineItemBuilder.AppendFormat(" total: {0},", AggregateItemParam.TotalDuration.Value.TotalMilliseconds.ToString("N0"));
+			LineItemBuilder.AppendFormat(" total: {0} ms", AggregateItemParam.TotalDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			//
-			// MAX.
+			// IF THE COUNT IS 1 - MEANING THERE WAS JUST 1 CHILD ACTIVITY, THEN JUST SHOW THE TOTAL TIME.
+			// IT MAKES NO SENSE TO SHOW ANYTHING ELSE BECAUSE IT'S ALL THE SAME NUMBER.
 			//
-			LineItemBuilder.AppendFormat(" max: {0},", AggregateItemParam.MaxDuration.Value.TotalMilliseconds.ToString("N0"));
+			if (AggregateItemParam.Count == 1)
+			{
+				LineItemBuilder.Append("]");
+			}
+			else
+			{
+				LineItemBuilder.Append(",");
 
-			//
-			// MIN.
-			//
-			LineItemBuilder.AppendFormat(" min: {0}]", AggregateItemParam.MinDuration.Value.TotalMilliseconds.ToString("N0"));
+				//
+				// AVERAGE.
+				//
+				LineItemBuilder.AppendFormat(" avg: {0},", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
+
+
+				//
+				// MAX.
+				//
+				LineItemBuilder.AppendFormat(" max: {0},", AggregateItemParam.MaxDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+
+				//
+				// MIN.
+				//
+				LineItemBuilder.AppendFormat(" min: {0}]", AggregateItemParam.MinDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+			}
 
 			return LineItemBuilder.ToString();
 		}
@@ -174,13 +188,11 @@ namespace PerformanceMarkers.MarkerReportFactories
 			// ACTIVITY NAME.
 			//
 			LineItemBuilder.Append(ActivityReportItemParam.ActivityName);
-			LineItemBuilder.Append(" [total: ");
 			
 			//
-			// DURATION.
+			// TOTAL DURATION.
 			//
-			LineItemBuilder.Append(ActivityReportItemParam.Duration == null ? "?" : ActivityReportItemParam.Duration.Value.TotalMilliseconds.ToString("N0"));
-			LineItemBuilder.Append("].");
+			LineItemBuilder.AppendFormat(" [total: {0} ms].", ActivityReportItemParam.Duration == null ? "?" : ActivityReportItemParam.Duration.Value.TotalMilliseconds.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
 			return LineItemBuilder.ToString();
 		}

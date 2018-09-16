@@ -5,64 +5,64 @@ namespace PerformanceMarkers
 {
 	public class ActivityReportItemCalculator
 	{
-		public static int Count (IEnumerable<ActivityReportItem> ActivityReportItems)
+		public static double Count (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
-			int ItemsCount = 0;
+			double ItemsCount = 0d;
 		
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
-				ItemsCount++;
+				ItemsCount += 1d;
 			}
 			
 			return ItemsCount;
 		}
 
 
-		public static TimeSpan TotalDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
+		public static double TotalDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
-			TimeSpan CreatedTimeSpan = new TimeSpan(0, 0, 0);
+			double DurationCalculation = 0d;
 			
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
 				if (CurrentItem.Duration != null)
-					CreatedTimeSpan = CreatedTimeSpan.Add(CurrentItem.Duration.Value);
+					DurationCalculation += CurrentItem.Duration.Value.TotalMilliseconds;
 			}
 			
-			return CreatedTimeSpan;
+			return DurationCalculation;
 		}
 
 
-		public static TimeSpan MaxDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
+		public static double MaxDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
-			TimeSpan CreatedTimeSpan = new TimeSpan(0, 0, 0);
+			double DurationCalculation = Double.MinValue;
 			
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
-				if (CurrentItem.Duration != null && CurrentItem.Duration.Value > CreatedTimeSpan)
-					CreatedTimeSpan = CurrentItem.Duration.Value;
+				if (CurrentItem.Duration != null && CurrentItem.Duration.Value.TotalMilliseconds > DurationCalculation)
+					DurationCalculation = CurrentItem.Duration.Value.TotalMilliseconds;
 			}
 			
-			return CreatedTimeSpan;
+			return DurationCalculation;
 		}
 
 
-		public static TimeSpan MinDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
+		public static double MinDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
-			TimeSpan CreatedTimeSpan = TimeSpan.MaxValue;
+			double DurationCalculation = Double.MaxValue;
 			
 			foreach (ActivityReportItem CurrentItem in ActivityReportItems)
 			{
-				if (CurrentItem.Duration != null && CurrentItem.Duration.Value < CreatedTimeSpan)
-					CreatedTimeSpan = CurrentItem.Duration.Value;
+				if (CurrentItem.Duration != null && CurrentItem.Duration.Value.TotalMilliseconds < DurationCalculation)
+					DurationCalculation = CurrentItem.Duration.Value.TotalMilliseconds;
 			}
 			
-			return CreatedTimeSpan;
+			return DurationCalculation;
 		}
 
 
-		public static TimeSpan AvgDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
+		public static double AvgDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
-			return TimeSpan.FromMilliseconds(TotalDuration(ActivityReportItems).TotalMilliseconds / ((double)Count(ActivityReportItems)));
+			return TotalDuration(ActivityReportItems) / Count(ActivityReportItems);
 		}
 	}
 }

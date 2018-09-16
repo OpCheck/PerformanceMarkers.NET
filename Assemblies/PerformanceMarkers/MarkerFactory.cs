@@ -52,5 +52,17 @@ namespace PerformanceMarkers
 			CreatedMarker.Start();
 			return CreatedMarker;
 		}
+
+
+		/// <summary>
+		/// Creates, names, and automatically starts an enabled performance marker.
+		/// </summary>
+		public static Marker StartMarker (string NameParam)
+		{
+			Marker CreatedMarker = CreateMarker(MarkerType.Enabled);
+			CreatedMarker.Name = NameParam;
+			CreatedMarker.Start();
+			return CreatedMarker;
+		}
 	}
 }

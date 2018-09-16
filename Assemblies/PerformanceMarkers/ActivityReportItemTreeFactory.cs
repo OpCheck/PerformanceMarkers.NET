@@ -49,43 +49,33 @@ namespace PerformanceMarkers
 				ActivityPoint NextStartPoint = NormalizedPointStackParam.Pop();
 				
 				//
-				// BUILD THE REPORT ITEM FOR THE NEXT START POINT.
+				// CHECK IF THE NEXT START POINT OCCURS AFTER THE END POINT OF THIS REPORT ITEM.
 				//
-				ActivityReportItem NextReportItem = CreateReportItemForStartPoint(NextStartPoint, NormalizedPointStackParam);
-				
-				//
-				// CHECK IF THE NEXT REPORT ITEM (ACTIVITY) SHOULD BE A CHILD OF THE CURRENT ACTIVITY IF IT SHOULD BE A SIBLING OF THE CURRENT ACTIVITY.
-				//
-				if (CurrentReportItem.StartPoint.SequenceNumber < NextReportItem.StartPoint.SequenceNumber && NextReportItem.EndPoint.SequenceNumber < CurrentReportItem.EndPoint.SequenceNumber)
+				if (CurrentReportItem.EndPoint.SequenceNumber < NextStartPoint.SequenceNumber)
 				{
 					//
-					// THE NEXT ACTIVITY IS A CHILD ACTIVITY.
+					// THE NEXT START POINT OCCURS AFTER THE CURRENT REPORT ITEM ENDS.
+					// WE ARE DONE BUILDING THE LIST OF CHILD ACTIVITY ITEMS.
 					//
-					ChildReportItemList.Add(NextReportItem);
-				}
-				else
-				{
+					
 					//
-					// THIS NEXT ACTIVITY IS A SIBLING AND WE ARE OUT OF BOUNDS FOR THE CURRENT ACTIVITY.
-					// THERE ARE NO MORE CHILDREN TO BE FOUND FOR THIS ACTIVITY.
-					// MAKE THE NEXT ACTIVITY A SIBLING OF THE CURRENT ONE.
+					// PUT THE NEXT START POINT BACK ON THE STACK.
 					//
-					CurrentReportItem.NextSiblingReportItem = NextReportItem;
+					NormalizedPointStackParam.Push(NextStartPoint);
+					
+					//
+					// THE LIST OF CHILD ACTIVITY ITEMS IS NOW COMPLETE.  GET OUT OF HERE.
+					//
 					break;
 				}
+				
+				// 
+				// BUILD THE REPORT ITEM FOR THE NEXT START POINT.
+				// THIS IS ALWAYS A CHILD REPORT ITEM.
+				//
+				ActivityReportItem NextReportItem = CreateReportItemForStartPoint(NextStartPoint, NormalizedPointStackParam);
+				ChildReportItemList.Add(NextReportItem);
 			}
-			
-			//
-			// COLLECT SIBLINGS AND COMPLETE THE TREE.
-			//
-			List<ActivityReportItem> NextSiblingReportItemList = new List<ActivityReportItem>();
-			
-			foreach (ActivityReportItem ChildReportItem in ChildReportItemList)
-			{
-				NextSiblingReportItemList.AddRange(GetNextSiblings(ChildReportItem));
-			}
-			
-			ChildReportItemList.AddRange(NextSiblingReportItemList);
 			
 			CurrentReportItem.ChildReportItems = ChildReportItemList.ToArray();
 			return CurrentReportItem;

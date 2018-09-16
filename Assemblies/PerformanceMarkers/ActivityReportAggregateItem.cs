@@ -5,10 +5,10 @@ namespace PerformanceMarkers
 	public class ActivityReportAggregateItem
 	{
 		public string ActivityName;
-		public int Count;
-		public TimeSpan? TotalDuration;
-		public TimeSpan? MaxDuration;
-		public TimeSpan? AvgDuration;
-		public TimeSpan? MinDuration;
+		public double Count;
+		public double? TotalDuration;
+		public double? MaxDuration;
+		public double? AvgDuration;
+		public double? MinDuration;
 	}
 }

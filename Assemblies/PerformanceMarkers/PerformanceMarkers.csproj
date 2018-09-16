@@ -16,9 +16,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -67,6 +68,7 @@
     <Compile Include="ActivityReportAggregateItem.cs" />
     <Compile Include="MarkerFailureMode.cs" />
     <Compile Include="MarkerReportFactories\XmlReportFactory.cs" />
+    <Compile Include="MarkerReportFactoryDefaults.cs" />
     <Compile Include="MarkerReportFactoryProvider.cs" />
     <Compile Include="Markers\EnabledMarker.cs" />
     <Compile Include="Markers\DisabledMarker.cs" />
@@ -83,6 +85,8 @@
     <Compile Include="MarkerTypeParser.cs" />
     <Compile Include="Printers\ActivityPointStackPrinter.cs" />
     <Compile Include="MarkerReportFactoryType.cs" />
+    <Compile Include="Renderers\MarkerRenderer.cs" />
+    <Compile Include="Renderers\PlainTextMarkerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configurators\" />
