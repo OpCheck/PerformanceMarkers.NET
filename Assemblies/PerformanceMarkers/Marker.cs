@@ -10,56 +10,33 @@ namespace PerformanceMarkers
 	public abstract class Marker
 	{
 		/// <summary>
-		/// Creates a marker and ensures that the activity point list is created and ready to use.
+		/// Initializes the marker for use.
 		/// </summary>
-		public Marker ()
-		{
-			_ActivityPointList = new List<ActivityPoint>();
-		}
+		public abstract void Init ();
 	
 	
 		/// <summary>
 		/// Starts the timing for the marker activity.
 		/// </summary>
-		public void Start ()
-		{
-			Start(_Name);
-		}
+		public abstract void Start ();
 
 
 		/// <summary>
 		/// Starts the timing for the specified activity name inside of the marker activity.
 		/// </summary>
-		public void Start (string ActivityNameParam)
-		{
-			ActivityPoint CreatedPoint = new ActivityPoint();
-			CreatedPoint.ActivityName = ActivityNameParam;
-			CreatedPoint.PointDateTime = DateTime.UtcNow;
-			CreatedPoint.PointType = ActivityPointType.Start;
-			_ActivityPointList.Add(CreatedPoint);
-		}
+		public abstract void Start (string ActivityNameParam);
 
 
 		/// <summary>
 		/// Ends the timing for the marker activity.
 		/// </summary>
-		public void End ()
-		{
-			End(_Name);
-		}
+		public abstract void End ();
 
 
 		/// <summary>
 		/// Ends the timing for the specified activity name.
 		/// </summary>
-		public void End (string ActivityNameParam)
-		{
-			ActivityPoint CreatedPoint = new ActivityPoint();
-			CreatedPoint.ActivityName = ActivityNameParam;
-			CreatedPoint.PointDateTime = DateTime.UtcNow;
-			CreatedPoint.PointType = ActivityPointType.End;
-			_ActivityPointList.Add(CreatedPoint);
-		}
+		public abstract void End (string ActivityNameParam);
 
 
 		/// <summary>
@@ -75,55 +52,31 @@ namespace PerformanceMarkers
 			}
 		}
 		
-
-		/// <summary>
-		/// Set to true to enable the marker, false otherwise.
-		/// A marker that is enabled will create activity points for performance timing when the start or end methods are called.
-		/// A disabled marker will not create activity points - it is effectively turned off and not useful.
-		/// It may be useful to disable markers in certain scenarios - such as production - where collecting and processing metrics may be a performance or memory issue itself.
-		/// </summary>
-		public bool Enabled
-		{
-			set
-			{
-				_Enabled = value;
-			}
-		}
-		
 		
 		/// <summary>
 		/// Returns true if the marker is disabled, false otherwise.
 		/// </summary>
-		public bool IsDisabled
+		public abstract bool IsDisabled
 		{
-			get
-			{
-				return !_Enabled;
-			}
+			get;
 		}
 
 
 		/// <summary>
 		/// Returns true if the marker is enabled, false otherwise.
 		/// </summary>
-		public bool IsEnabled
+		public abstract bool IsEnabled
 		{
-			get
-			{
-				return _Enabled;
-			}
+			get;
 		}
 	
 
 		/// <summary>
 		/// Gets the activity points from this marker.
 		/// </summary>
-		public ActivityPoint[] ActivityPoints
+		public abstract ActivityPoint[] ActivityPoints
 		{
-			get
-			{
-				return _ActivityPointList.ToArray();
-			}
+			get;
 		}
 
 
@@ -135,23 +88,25 @@ namespace PerformanceMarkers
 		{
 			get
 			{
-				return _MarkerFailureMode;
-			}
-
-
-			set
-			{
-				_MarkerFailureMode = value;
+				return _Config.FailureMode;
 			}
 		}
 		
+		
+		public MarkerConfig Config
+		{
+			set
+			{
+				_Config = value;
+			}
+		}
+
 
 		//
 		// INPUT FIELDS.
 		//
 		protected string _Name;
-		protected bool _Enabled;
-		protected MarkerFailureMode _MarkerFailureMode;
+		protected MarkerConfig _Config;
 		
 		//
 		// OPERATIONAL FIELDS.

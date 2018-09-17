@@ -53,11 +53,6 @@ namespace PerformanceMarkers.MarkerReportFactories
 		public string CreateReportForActivityReportItem (ActivityReportItem ParentReportItem, int NestingLevel)
 		{
 			//
-			// NOW THAT THIS REPORT ITEM HAS ALL OF ITS CHILDREN WE CAN CALCULATE THE HIDDEN PROCESSING TIME.
-			//
-			ParentReportItem.HiddenDuration = ActivityReportItemCalculator.HiddenDuration(ParentReportItem);
-		
-			//
 			// CREATE THE REPORT LINE ITEM FOR THE PARENT.
 			//
 			StringBuilder ReportBuilder = new StringBuilder();

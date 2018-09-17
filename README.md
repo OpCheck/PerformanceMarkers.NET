@@ -98,7 +98,7 @@ This is a summary for a child activity that observed more than once.  In this ca
 			+ SessionSaveNewRank [count: 5,000; total: 214.0 ms; avg: 0.043; max: 39.0; min: 0.0]
 			+ Commit [count: 1; total: 5,342.3 ms]
 
-This is one of the 5 transactions that were run.  It has its own set of child activity summaries.  Thus, performance reports are hierarchical.  Notice how it is summarizing several thousand children for us.  In this case, the activity named 'Loader.Load' is consuming most of the processing time (23,685.3 ms out of 33,297.9 ms).  Thus, this real-world example has exposed what we should try to tune next.
+This is one of the 5 transactions that were run.  It has its own set of child activity summaries.  Thus, performance reports are hierarchical.  Notice how it is summarizing several thousand children for us.  In this case, the activity named 'Loader.Load' is consuming most of the processing time (23,685.3 ms out of 33,297.9 ms).  Thus, this real-world example has likely exposed what we need to examine next.
 
 ## Performance Reports
 
@@ -147,6 +147,8 @@ Write to a stream:
 ## Recommended Configuration
 
 * Development & Testing Environments
+
+
 * Production Environments
 
 ## Configuration Reference

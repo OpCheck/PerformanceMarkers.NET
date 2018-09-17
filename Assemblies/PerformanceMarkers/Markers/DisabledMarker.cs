@@ -7,24 +7,55 @@ namespace PerformanceMarkers.Markers
 	/// </summary>
 	public class DisabledMarker : Marker
 	{
-		/// <summary>
-		/// Creates a disabled marker with no name.
-		/// The caller must set the name using the name setter.
-		/// </summary>
-		public DisabledMarker () : base()
+		public override void Init ()
 		{
-			_Enabled = false;
 		}
 
 
-		/// <summary>
-		/// Creates a performance marker with the specified name.
-		/// A marker name can be the name of anything you want such as a web page or a method.
-		/// By defaults, this marker is disabled.
-		/// </summary>
-		public DisabledMarker (string NameParam) : this()
+		public override void Start ()
 		{
-			_Name = NameParam;
+		}
+
+
+		public override void Start (string ActivityNameParam)
+		{
+		}
+
+
+		public override void End ()
+		{
+		}
+
+
+		public override void End (string ActivityNameParam)
+		{
+		}
+		
+
+		public override bool IsDisabled
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+
+		public override bool IsEnabled
+		{
+			get
+			{
+				return false;
+			}
+		}
+		
+
+		public override ActivityPoint[] ActivityPoints
+		{
+			get
+			{
+				return null;
+			}
 		}
 	}
 }

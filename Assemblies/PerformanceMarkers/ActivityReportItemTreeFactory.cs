@@ -78,26 +78,13 @@ namespace PerformanceMarkers
 			}
 			
 			CurrentReportItem.ChildReportItems = ChildReportItemList.ToArray();
+			
+			//
+			// NOW THAT THIS REPORT ITEM HAS ALL OF ITS CHILDREN WE CAN CALCULATE THE HIDDEN PROCESSING TIME.
+			//
+			CurrentReportItem.HiddenDuration = ActivityReportItemCalculator.HiddenDuration(CurrentReportItem);
+			
 			return CurrentReportItem;
-		}
-		
-		
-		public static ActivityReportItem[] GetNextSiblings (ActivityReportItem ReportItemParam)
-		{
-			//
-			// CREATE THE LIST OF SIBLINGS.
-			//
-			List<ActivityReportItem> ActivityReportItemList = new List<ActivityReportItem>();
-			
-			ActivityReportItem CurrentReportItem = ReportItemParam;
-			
-			while (CurrentReportItem.NextSiblingReportItem != null)
-			{
-				ActivityReportItemList.Add(CurrentReportItem.NextSiblingReportItem);
-				CurrentReportItem = CurrentReportItem.NextSiblingReportItem;
-			}
-			
-			return ActivityReportItemList.ToArray();
 		}
 
 

@@ -19,49 +19,33 @@ namespace PerformanceMarkers
 
 
 		/// <summary>
-		/// Creates a performance marker using the specified type string - which must be a valid marker type enumeration value.
-		/// The marker will have no name, so the caller must set the name of the marker afterward.
-		/// The marker must also be started by the caller.
-		/// </summary>
-		public static Marker CreateMarker (string MarkerTypeParam)
-		{
-			return CreateMarker(MarkerTypeParser.Parse(MarkerTypeParam));
-		}
-
-
-		/// <summary>
-		/// Creates a performance marker using the specified marker type string - which must be a valid marker type enumeration value.
-		/// The second parameter is the marker name.
-		/// The marker is not started automatically - so it must also be started by the caller.
-		/// </summary>
-		public static Marker CreateMarkerWithTypeAndName (string MarkerTypeParam, string NameParam)
-		{
-			Marker CreatedMarker = CreateMarker(MarkerTypeParam);
-			CreatedMarker.Name = NameParam;
-			return CreatedMarker;
-		}
-		
-		
-		/// <summary>
-		/// Creates, names, and automatically starts a performance marker using the specified marker type string - which must be a valid marker type enumeration value.
-		/// </summary>
-		public static Marker StartMarkerWithTypeAndName (string MarkerTypeParam, string NameParam)
-		{
-			Marker CreatedMarker = CreateMarker(MarkerTypeParam);
-			CreatedMarker.Name = NameParam;
-			CreatedMarker.Start();
-			return CreatedMarker;
-		}
-
-
-		/// <summary>
-		/// Creates, names, and automatically starts an enabled performance marker.
+		/// Creates and automatically starts a performance marker.
 		/// </summary>
 		public static Marker StartMarker (string NameParam)
 		{
-			Marker CreatedMarker = CreateMarker(MarkerType.Enabled);
-			CreatedMarker.Name = NameParam;
+			Marker CreatedMarker = CreateMarker(NameParam);
 			CreatedMarker.Start();
+			return CreatedMarker;
+		}
+		
+
+		/// <summary>
+		/// Creates a marker configured by the marker config provider.
+		/// </summary>
+		public static Marker CreateMarker (string NameParam)
+		{
+			//
+			// GET THE CONFIGURATION.
+			//
+			MarkerConfig CurrentMarkerConfig = MarkerConfigProvider.GetMarkerConfig();
+		
+			//
+			// CREATE THE MARKER.
+			//
+			Marker CreatedMarker = CreateMarker(CurrentMarkerConfig.Type);
+			CreatedMarker.Name = NameParam;
+			CreatedMarker.Config = CurrentMarkerConfig;
+			CreatedMarker.Init();
 			return CreatedMarker;
 		}
 	}

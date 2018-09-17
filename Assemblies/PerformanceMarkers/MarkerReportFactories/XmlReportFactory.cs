@@ -17,9 +17,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 		/// </summary>
 		public override string CreateDisabledReport (Marker CurrentMarker)
 		{
-			XmlDocument EmptyDocument = new XmlDocument();
-			EmptyDocument.LoadXml("<Activity></Activity>");
-			return EmptyDocument.OuterXml;
+			return "<Activity />";
 		}
 		
 		
@@ -72,20 +70,22 @@ namespace PerformanceMarkers.MarkerReportFactories
 				ActivityReportElement.SetAttribute("Name", ParentReportItem.ActivityName);
 			
 			//
-			// DURATION.
+			// TOTAL DURATION.
 			//
 			if (ParentReportItem.Duration != null)
-				ActivityReportElement.SetAttribute("Duration", ParentReportItem.Duration.Value.ToString());
+				ActivityReportElement.SetAttribute("Total", ParentReportItem.Duration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+
+			//
+			// HIDDEN DURATION.
+			//
+			if (ParentReportItem.HiddenDuration != null)
+				ActivityReportElement.SetAttribute("Hidden", ParentReportItem.HiddenDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
 			//
 			// DESCRIPTION.
 			//
 			if (ParentReportItem.Desc != null)
-			{
-				XmlElement CreatedElement = _MarkerReportDocument.CreateElement("Desc");
-				CreatedElement.InnerText = ParentReportItem.Desc;
-				ActivityReportElement.AppendChild(CreatedElement);
-			}
+				ActivityReportElement.SetAttribute("Desc", ParentReportItem.Desc);
 			
 			//
 			// CREATE A SUMMARY ELEMENT FOR EACH CHILD ACCORDING TO THE SPECIFIED CONFIGURATION.
@@ -105,8 +105,8 @@ namespace PerformanceMarkers.MarkerReportFactories
 				// FORCE SHOW ALL SUMMARIES.
 				// CREATE THE CHILD ACTIVITY SUMMARIES ELEMENT.
 				//
-				ChildActivitySummariesElement = _MarkerReportDocument.CreateElement("ChildActivitySummaries");
-				ChildActivitySummariesElement.SetAttribute("Count", ChildActivityNames.Length.ToString());
+				ChildActivitySummariesElement = _MarkerReportDocument.CreateElement("Summaries");
+				ChildActivitySummariesElement.SetAttribute("Count", ChildActivityNames.Length.ToString(MarkerReportFactoryDefaults.CountDisplayFormatCode));
 				ActivityReportElement.AppendChild(ChildActivitySummariesElement);
 			}
 			else
@@ -131,8 +131,8 @@ namespace PerformanceMarkers.MarkerReportFactories
 				
 				if (ChildActivitySummariesWithMultipleChildrenCount > 0)
 				{
-					ChildActivitySummariesElement = _MarkerReportDocument.CreateElement("ChildActivitySummaries");
-					ChildActivitySummariesElement.SetAttribute("Count", ChildActivitySummariesWithMultipleChildrenCount.ToString());
+					ChildActivitySummariesElement = _MarkerReportDocument.CreateElement("Summaries");
+					ChildActivitySummariesElement.SetAttribute("Count", ChildActivitySummariesWithMultipleChildrenCount.ToString(MarkerReportFactoryDefaults.CountDisplayFormatCode));
 					ActivityReportElement.AppendChild(ChildActivitySummariesElement);
 				}
 			}
@@ -171,19 +171,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 					ChildActivitySummariesElement.AppendChild(CreatedChildActivitySummaryElement);
 				}
 			}
-		
-			//
-			// COUNT THE NUMBER OF CHILD ACTIVITIES THAT ARE PARENTS OF CHILDREN THEMSELVES.
-			//
-			/*
-			int ChildActivitiesThatAreParentsAlsoCount = 0;
-			
-			foreach (ActivityReportItem[] ChildReportItem in ParentReportItem.ChildReportItems)
-			{
-				ChildActivitiesThatAreParentsAlsoCount += ChildReportItem.ChildReportItems.Length > 0 ? 1 : 0;
-			}
-			*/
-		
+
 			//
 			// CREATE THE CHILD ACTIVITIES ELEMENT.
 			//
@@ -256,7 +244,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// CREATE THE ACTIVITY ELEMENT.
 			//
-			XmlElement ActivityReportAggregateElement = _MarkerReportDocument.CreateElement("ActivitySummary");
+			XmlElement ActivityReportAggregateElement = _MarkerReportDocument.CreateElement("Summary");
 			
 			//
 			// ACTIVITY NAME.
@@ -273,25 +261,25 @@ namespace PerformanceMarkers.MarkerReportFactories
 			// TOTAL DURATION.
 			//
 			if (AggregateItemParam.TotalDuration != null)
-				ActivityReportAggregateElement.SetAttribute("TotalDuration", AggregateItemParam.TotalDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+				ActivityReportAggregateElement.SetAttribute("Total", AggregateItemParam.TotalDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			//
 			// MAX DURATION.
 			//
 			if (AggregateItemParam.MaxDuration != null)
-				ActivityReportAggregateElement.SetAttribute("MaxDuration", AggregateItemParam.MaxDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+				ActivityReportAggregateElement.SetAttribute("Max", AggregateItemParam.MaxDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			//
 			// AVERAGE DURATION.
 			//
 			if (AggregateItemParam.AvgDuration != null)
-				ActivityReportAggregateElement.SetAttribute("AvgDuration", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
+				ActivityReportAggregateElement.SetAttribute("Avg", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
 
 			//
 			// MIN DURATION.
 			//
 			if (AggregateItemParam.MinDuration != null)
-				ActivityReportAggregateElement.SetAttribute("MinDuration", AggregateItemParam.MinDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+				ActivityReportAggregateElement.SetAttribute("Min", AggregateItemParam.MinDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
 			return ActivityReportAggregateElement;
 		}

@@ -66,6 +66,10 @@
     <Compile Include="ActivityReportItemListMap.cs" />
     <Compile Include="ActivityReportItemTreeFactory.cs" />
     <Compile Include="ActivityReportAggregateItem.cs" />
+    <Compile Include="Configurators\XmlConfigurator.cs" />
+    <Compile Include="MarkerConfig.cs" />
+    <Compile Include="MarkerConfigProvider.cs" />
+    <Compile Include="MarkerConfigReference.cs" />
     <Compile Include="MarkerFailureMode.cs" />
     <Compile Include="MarkerReportFactories\XmlReportFactory.cs" />
     <Compile Include="MarkerReportFactoryDefaults.cs" />
@@ -74,7 +78,6 @@
     <Compile Include="Markers\DisabledMarker.cs" />
     <Compile Include="DurationCalculator.cs" />
     <Compile Include="EndPointNotFoundException.cs" />
-    <Compile Include="Granularity.cs" />
     <Compile Include="Marker.cs" />
     <Compile Include="MarkerFactory.cs" />
     <Compile Include="ActivityPointType.cs" />
@@ -82,14 +85,15 @@
     <Compile Include="MarkerReportFactory.cs" />
     <Compile Include="ActivityReportItem.cs" />
     <Compile Include="MarkerType.cs" />
-    <Compile Include="MarkerTypeParser.cs" />
+    <Compile Include="Parsers\MarkerReportFactoryTypeParser.cs" />
+    <Compile Include="Parsers\MarkerFailureModeParser.cs" />
+    <Compile Include="Parsers\MarkerTypeParser.cs" />
     <Compile Include="Printers\ActivityPointStackPrinter.cs" />
     <Compile Include="MarkerReportFactoryType.cs" />
     <Compile Include="Renderers\MarkerRenderer.cs" />
     <Compile Include="Renderers\PlainTextMarkerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configurators\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

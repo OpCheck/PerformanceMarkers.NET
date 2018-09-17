@@ -9,7 +9,6 @@ namespace PerformanceMarkers
 		public double? HiddenDuration;
 		public string DurationFormatCode;
 		public string Desc;
-		public Granularity Granularity;
 
 		public ActivityPoint StartPoint;
 		public ActivityPoint EndPoint;

@@ -23,7 +23,7 @@ namespace PerformanceMarkers.Tests.MarkerReportFactoryFixtures.PlainTextReportFa
 			//
 			// CREATE THE STACK.
 			//	
-			Marker CreatedMarker = MarkerFactory.StartMarkerWithTypeAndName("Enabled", "SectorFactorsWeeklyApp");
+			Marker CreatedMarker = MarkerFactory.StartMarker("SectorFactorsWeeklyApp");
 			CreatedMarker.Start("MaxSectorFactorIdQuery");
 			CreatedMarker.End("MaxSectorFactorIdQuery");
 			CreatedMarker.Start("ByMetricDateGetSectorFactorsQuery");

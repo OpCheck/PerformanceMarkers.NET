@@ -1,0 +1,5 @@
+<MarkerConfig>
+	<MarkerType>Enabled</MarkerType>
+	<MarkerFailureMode>HighlyVisible</MarkerFailureMode>
+	<MarkerReportFactoryType>PlainText</MarkerReportFactoryType>
+</MarkerConfig>

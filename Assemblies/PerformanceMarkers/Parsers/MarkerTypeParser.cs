@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PerformanceMarkers
+namespace PerformanceMarkers.Parsers
 {
 	/// <summary>
 	/// A parser for marker type enumeration values.
