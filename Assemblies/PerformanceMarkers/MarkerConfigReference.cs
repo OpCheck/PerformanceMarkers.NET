@@ -7,18 +7,27 @@
 	/// </summary>
 	public class MarkerConfigReference
 	{
+		/// <summary>
+		/// Sets the initial system defaults.
+		/// The initial system defaults are targeted for development environments.
+		/// </summary>
 		static MarkerConfigReference ()
 		{
 			//
 			// SET SYSTEM DEFAULTS.
 			//
-			Type = MarkerType.Enabled;
-			FailureMode = MarkerFailureMode.HighlyVisible;
-			ReportFactoryType = MarkerReportFactoryType.PlainText;
+			MarkerConfig = new MarkerConfig();
+			MarkerConfig.Type = MarkerType.Enabled;
+			MarkerConfig.FailureMode = MarkerFailureMode.HighlyVisible;
+			MarkerConfig.ReportFactoryType = MarkerReportFactoryType.PlainText;
 		}
+
 	
-		public static MarkerType Type;
-		public static MarkerFailureMode FailureMode;
-		public static MarkerReportFactoryType ReportFactoryType;
+		/// <summary>
+		/// The "official" configuration object.
+		/// This object is managed by the configuration provider.
+		/// All requests for this reference should go through the provider.
+		/// </summary>
+		public static MarkerConfig MarkerConfig;
 	}
 }

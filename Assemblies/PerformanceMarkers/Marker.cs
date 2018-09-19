@@ -93,6 +93,11 @@ namespace PerformanceMarkers
 		}
 		
 		
+		/// <summary>
+		/// Sets the marker configuration object so the marker knows how to behave in certain situations.
+		/// For example, if the configuration failure mode is set to highly visible, then the marker is permitted to throw exceptions.
+		/// The report factories also comply with the configuration.
+		/// </summary>
 		public MarkerConfig Config
 		{
 			set

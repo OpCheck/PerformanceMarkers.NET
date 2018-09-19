@@ -4,11 +4,7 @@
 	{
 		public static MarkerConfig GetMarkerConfig ()
 		{
-			MarkerConfig CreatedConfig = new MarkerConfig();
-			CreatedConfig.Type = MarkerConfigReference.Type;
-			CreatedConfig.FailureMode = MarkerConfigReference.FailureMode;
-			CreatedConfig.ReportFactoryType = MarkerConfigReference.ReportFactoryType;
-			return CreatedConfig;
+			return MarkerConfigReference.MarkerConfig;
 		}
 	}
 }

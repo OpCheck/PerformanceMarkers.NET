@@ -1,12 +1,12 @@
 # PerformanceMarkers.NET
 
-A lightweight and extremely easy-to-use .NET library that helps you:
+A lightweight, extremely easy-to-use performance optimization library for .NET that helps you:
 
-* precisely determine where the bottlenecks are in your application.  This is called the **Exposure Phase**.
-* prove (or disprove) the performance impact of changes applied.  This is called **Tuning Verification**.
-* methodically increase your application's performance over time to reach its speed limits.  This is called **Convergence**.
+* precisely determine where the bottlenecks are and where "hidden" processing time occurs in your application.  This  performance optimization subprocess is called the **Exposure Phase**.
+* prove (or disprove) the performance impact of a change - or set of changes.  This is called **Tuning Verification**.
+* methodically increase your application's performance over time to reach its speed limits as a fundamental part of your software development process.  This is called **Convergence**.
 
-How this is achieved is simple: performance collection statements are inserted directly into your code - very similar to how you do logging.  In effect, measuring performance becomes a function of the application itself.  This is called the **Integrated Performance Metrics Approach**.
+How you implement this strategy for your application is simple: performance collection statements are inserted directly into your code - very similar to how you do logging.  In effect, measuring performance becomes a function of the application itself.  This is called the **Integrated Performance Metrics Approach**.
 
 We believe that collecting these metrics should be a fundamental part of the software development process due to the enormously positive quality impact it has.
 
@@ -153,3 +153,8 @@ Write to a stream:
 
 ## Configuration Reference
 
+	<MarkerConfig>
+		<MarkerType>Enabled</MarkerType>
+		<MarkerFailureMode>HighlyVisible</MarkerFailureMode>
+		<MarkerReportFactoryType>PlainText</MarkerReportFactoryType>
+	</MarkerConfig>
