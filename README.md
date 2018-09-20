@@ -127,13 +127,11 @@ Now that we know that markers and marker factories are not thread-safe, we can d
 
 ## Performance Reports - XML
 
-There are 2 ways to get a performance report in XML format.
-
-Get as a string:
+There are 2 ways to get a performance report in XML format.  You can generate the report directly as a string:
 
 	string PerformanceReport = MarkerReportFactoryProvider.CreateReportFactory(MarkerReportFactoryType.Xml).CreateReport(CreatedMarker);
 
-Write to a stream:
+You can also write to a stream:
 
 	using (FileStream TargetStream = new FileStream("path/to/file.xml", FileMode.Create))
 	{
@@ -143,18 +141,57 @@ Write to a stream:
 		CreatedFactory.WriteReport();
 	}
 
+## Configuration
 
-## Recommended Configuration
+The initial system configuration is targeted for development environments and is defined in MarkerConfigReference.cs:
 
-* Development & Testing Environments
+	MarkerConfig.Type = MarkerType.Enabled;
+	MarkerConfig.FailureMode = MarkerFailureMode.HighlyVisible;
+	MarkerConfig.ReportFactoryType = MarkerReportFactoryType.PlainText;
 
+By default, markers are enabled - which means they collect start and end times for activities.  A disabled marker does not save this data.
 
-* Production Environments
+The failure mode is set to be "highly visible" by default - which means the framework will throw exceptions and possibly disrupt the application.  This helps discover and fix any performance marker issues before your application gets to production.
 
-## Configuration Reference
+In addition, the framework will produce plain-text reports unless configured otherwise.  This makes it very convenient to output reports directly to the log so it can be reviewed.
+
+PerformanceMarkers.NET has a "configurator" object that configures the marker framework and automatically propagates an updated configuration.  This lets the administrator change the configuration without restarting the application.
+
+The configuration is an XML file that looks like this:
+
+	<MarkerConfig>
+		<MarkerType>Disabled</MarkerType>
+		<MarkerFailureMode>CompletelyHidden</MarkerFailureMode>
+		<MarkerReportFactoryType>PlainText</MarkerReportFactoryType>
+	</MarkerConfig>
+
+You then use the XmlConfigurator class to load the configuration.
+
+	//
+	// CONFIGURES THE PERFORMANCE MARKERS FRAMEWORK AND WATCHES FOR CHANGES.
+	//
+	XmlConfigurator.ConfigureAndWatch("path/to/markers-config.xml");
+
+When you use the MarkerFactory to create a marker - the factory pays close attention to the current configuration. 
+
+## Development & Testing Configuration
+
+The recommended configuration for non-production-like environments is this:
 
 	<MarkerConfig>
 		<MarkerType>Enabled</MarkerType>
 		<MarkerFailureMode>HighlyVisible</MarkerFailureMode>
+		<MarkerReportFactoryType>PlainText</MarkerReportFactoryType>
+	</MarkerConfig>
+
+## Production Configuration
+
+In production-like environments, performance and stability are favored over performance reporting.  Therefore, we recommended disabling the marker framework and suppressing any exceptions or other behavior that would be disruptive to the application.
+
+The following configuration file is suitable for production-like environments:
+
+	<MarkerConfig>
+		<MarkerType>Disabled</MarkerType>
+		<MarkerFailureMode>CompletelyHidden</MarkerFailureMode>
 		<MarkerReportFactoryType>PlainText</MarkerReportFactoryType>
 	</MarkerConfig>

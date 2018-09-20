@@ -17,6 +17,10 @@
 			// SET SYSTEM DEFAULTS.
 			//
 			MarkerConfig = new MarkerConfig();
+			
+			//
+			// ENABLE MARKERS.
+			//
 			MarkerConfig.Type = MarkerType.Enabled;
 			MarkerConfig.FailureMode = MarkerFailureMode.HighlyVisible;
 			MarkerConfig.ReportFactoryType = MarkerReportFactoryType.PlainText;
