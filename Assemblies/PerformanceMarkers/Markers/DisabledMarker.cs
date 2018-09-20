@@ -3,7 +3,9 @@
 namespace PerformanceMarkers.Markers
 {
 	/// <summary>
-	/// A marker that is disabled by default.
+	/// A marker that is disabled.
+	/// It does absolutely nothing.
+	/// This is the marker that is returned if the configuration specifies a marker type of disabled.
 	/// </summary>
 	public class DisabledMarker : Marker
 	{

@@ -79,7 +79,7 @@ This report gives us a summary of how long each query and transaction took to co
 
 	RanksApp [total: 164,655.4 ms; hidden: 2.0].
 
-This line tells us that the 'RanksApp' took a total of 164,655.4 ms to run - about 165 seconds, and that there was 2.0 ms of hidden processing time.  **Hidden processing time** is the difference between a parent activity's total time and the sum of its child activity total times.
+This line tells us that the 'RanksApp' took a total of 164,655.4 ms to run - about 165 seconds, and that there was 2.0 ms of hidden processing time.  **Hidden processing time** is the difference between a parent activity's total time and the sum of its child activity total times.  This is processing time that was not accounted for by your markers - and you generally want this to be a very low, negligible number.
 
 		+ MaxRankIdQuery [count: 1; total: 155.0 ms]
 		+ AllCompaniesQuery [count: 1; total: 2,058.1 ms]
@@ -110,18 +110,14 @@ You can export to the following media types:
 * **Text** - a human-readable hierarchy of activities with summaries of how long each activity took to complete.  See above for a sample report.
 * **XML** - same as the text format, except you can also easily load it using any XML parser.  This is useful when you may need to write a script that aggregates several performance reports.
 
-
-## Sequential Performance Tracking
-
-## Thread Safety
+## Concurrent Performance Tracking
 
 Instances of the Marker class are not thread-safe.  Ensure that exactly 1 thread is accessing a marker at a time.
 
-Instances of the  MarkerFactory class are not thread-safe, either.  However the following statement is thread-safe because it creates a marker factory and uses it. 
+Instances of the  MarkerFactory class are not thread-safe, either.  However the following statement is thread-safe because it creates an instance of a marker factory and uses it. 
 
 	MarkerReportFactoryProvider.CreateReportFactory(MarkerReportFactoryType.Xml).CreateReport(CreatedMarker);
 
-## Concurrent Performance Tracking
 
 Now that we know that markers and marker factories are not thread-safe, we can develop a strategy 
 
@@ -140,6 +136,74 @@ You can also write to a stream:
 		CreatedFactory.Marker = CreatedMarker;
 		CreatedFactory.WriteReport();
 	}
+
+The output will have a structure like this:
+
+	<Activity Name="RanksApp" Total="48,456.8" Hidden="6.0">
+	  <Summaries Count="4">
+	    <Summary Name="MaxRankIdQuery" Count="1" Total="156.0" Max="156.0" Avg="156.009" Min="156.0" />
+	    <Summary Name="AllCompaniesQuery" Count="1" Total="2,064.1" Max="2,064.1" Avg="2,064.118" Min="2,064.1" />
+	    <Summary Name="Loader.Load" Count="5" Total="34.0" Max="34.0" Avg="6.800" Min="0.0" />
+	    <Summary Name="Transaction" Count="5" Total="46,196.6" Max="9,990.6" Avg="9,239.328" Min="7,705.4" />
+	  </Summaries>
+	  <ChildActivities>
+	    <Activity Name="Transaction" Total="9,568.5" Hidden="4.0">
+	      <Summaries Count="6">
+	        <Summary Name="BeginTransaction" Count="1" Total="4.0" Max="4.0" Avg="4.000" Min="4.0" />
+	        <Summary Name="_CompanyCache.GetByTickerOrSEDOL6" Count="5,000" Total="3.0" Max="1.0" Avg="0.001" Min="0.0" />
+	        <Summary Name="TargetRankQuery.List" Count="5,000" Total="3,832.2" Max="60.0" Avg="0.766" Min="0.0" />
+	        <Summary Name="SessionSaveNewRank" Count="5,000" Total="226.0" Max="39.0" Avg="0.045" Min="0.0" />
+	        <Summary Name="Loader.Load" Count="4,999" Total="131.0" Max="22.0" Avg="0.026" Min="0.0" />
+	        <Summary Name="Commit" Count="1" Total="5,368.3" Max="5,368.3" Avg="5,368.307" Min="5,368.3" />
+	      </Summaries>
+	      <ChildActivities />
+	    </Activity>
+	    <Activity Name="Transaction" Total="9,415.5" Hidden="10.0">
+	      <Summaries Count="6">
+	        <Summary Name="BeginTransaction" Count="1" Total="1.0" Max="1.0" Avg="1.000" Min="1.0" />
+	        <Summary Name="_CompanyCache.GetByTickerOrSEDOL6" Count="5,000" Total="10.0" Max="1.0" Avg="0.002" Min="0.0" />
+	        <Summary Name="TargetRankQuery.List" Count="5,000" Total="3,749.2" Max="3.0" Avg="0.750" Min="0.0" />
+	        <Summary Name="SessionSaveNewRank" Count="5,000" Total="186.0" Max="1.0" Avg="0.037" Min="0.0" />
+	        <Summary Name="Loader.Load" Count="4,999" Total="142.0" Max="1.0" Avg="0.028" Min="0.0" />
+	        <Summary Name="Commit" Count="1" Total="5,317.3" Max="5,317.3" Avg="5,317.304" Min="5,317.3" />
+	      </Summaries>
+	      <ChildActivities />
+	    </Activity>
+	    <Activity Name="Transaction" Total="9,516.5" Hidden="9.0">
+	      <Summaries Count="6">
+	        <Summary Name="BeginTransaction" Count="1" Total="0.0" Max="0.0" Avg="0.000" Min="0.0" />
+	        <Summary Name="_CompanyCache.GetByTickerOrSEDOL6" Count="5,000" Total="0.0" Max="0.0" Avg="0.000" Min="0.0" />
+	        <Summary Name="TargetRankQuery.List" Count="5,000" Total="3,843.2" Max="85.0" Avg="0.769" Min="0.0" />
+	        <Summary Name="SessionSaveNewRank" Count="5,000" Total="161.0" Max="1.0" Avg="0.032" Min="0.0" />
+	        <Summary Name="Loader.Load" Count="4,999" Total="152.0" Max="1.0" Avg="0.030" Min="0.0" />
+	        <Summary Name="Commit" Count="1" Total="5,351.3" Max="5,351.3" Avg="5,351.306" Min="5,351.3" />
+	      </Summaries>
+	      <ChildActivities />
+	    </Activity>
+	    <Activity Name="Transaction" Total="9,990.6" Hidden="3.0">
+	      <Summaries Count="6">
+	        <Summary Name="BeginTransaction" Count="1" Total="1.0" Max="1.0" Avg="1.000" Min="1.0" />
+	        <Summary Name="_CompanyCache.GetByTickerOrSEDOL6" Count="5,000" Total="8.0" Max="1.0" Avg="0.002" Min="0.0" />
+	        <Summary Name="TargetRankQuery.List" Count="5,000" Total="3,737.2" Max="3.0" Avg="0.747" Min="0.0" />
+	        <Summary Name="SessionSaveNewRank" Count="5,000" Total="185.0" Max="3.0" Avg="0.037" Min="0.0" />
+	        <Summary Name="Loader.Load" Count="4,999" Total="124.0" Max="1.0" Avg="0.025" Min="0.0" />
+	        <Summary Name="Commit" Count="1" Total="5,932.3" Max="5,932.3" Avg="5,932.339" Min="5,932.3" />
+	      </Summaries>
+	      <ChildActivities />
+	    </Activity>
+	    <Activity Name="Transaction" Total="7,705.4" Hidden="3.0">
+	      <Summaries Count="6">
+	        <Summary Name="BeginTransaction" Count="1" Total="1.0" Max="1.0" Avg="1.000" Min="1.0" />
+	        <Summary Name="_CompanyCache.GetByTickerOrSEDOL6" Count="4,280" Total="2.0" Max="1.0" Avg="0.000" Min="0.0" />
+	        <Summary Name="TargetRankQuery.List" Count="4,280" Total="3,217.2" Max="2.0" Avg="0.752" Min="0.0" />
+	        <Summary Name="SessionSaveNewRank" Count="4,280" Total="149.0" Max="1.0" Avg="0.035" Min="0.0" />
+	        <Summary Name="Loader.Load" Count="4,280" Total="102.0" Max="2.0" Avg="0.024" Min="0.0" />
+	        <Summary Name="LastCommit" Count="1" Total="4,231.2" Max="4,231.2" Avg="4,231.242" Min="4,231.2" />
+	      </Summaries>
+	      <ChildActivities />
+	    </Activity>
+	  </ChildActivities>
+	</Activity>
 
 ## Configuration
 
