@@ -84,6 +84,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 					CreatedAggregateItem.ActivityName = ChildActivityName;
 					CreatedAggregateItem.Count = ChildActivityList.Count;
 					CreatedAggregateItem.TotalDuration = ActivityReportItemCalculator.TotalDuration(ChildActivityList);
+					CreatedAggregateItem.TotalDurationPercent = ActivityReportItemCalculator.TotalDurationPercent(ParentReportItem, ChildActivityList);
 					CreatedAggregateItem.MaxDuration = ActivityReportItemCalculator.MaxDuration(ChildActivityList);
 					CreatedAggregateItem.AvgDuration = ActivityReportItemCalculator.AvgDuration(ChildActivityList);
 					CreatedAggregateItem.MinDuration = ActivityReportItemCalculator.MinDuration(ChildActivityList);
@@ -139,6 +140,12 @@ namespace PerformanceMarkers.MarkerReportFactories
 			LineItemBuilder.AppendFormat(" total: {0} ms", AggregateItemParam.TotalDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			//
+			// TOTAL DURATION PERCENT.
+			//
+			if (AggregateItemParam.TotalDurationPercent != null)
+				LineItemBuilder.AppendFormat(", {0}%", (AggregateItemParam.TotalDurationPercent.Value * 100d).ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+
+			//
 			// IF THE COUNT IS 1 - MEANING THERE WAS JUST 1 CHILD ACTIVITY, THEN JUST SHOW THE TOTAL TIME.
 			// IT MAKES NO SENSE TO SHOW ANYTHING ELSE BECAUSE IT'S ALL THE SAME NUMBER.
 			//
@@ -154,7 +161,6 @@ namespace PerformanceMarkers.MarkerReportFactories
 				// AVERAGE.
 				//
 				LineItemBuilder.AppendFormat(" avg: {0};", AggregateItemParam.AvgDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCodeForAverages));
-
 
 				//
 				// MAX.
@@ -200,8 +206,12 @@ namespace PerformanceMarkers.MarkerReportFactories
 			//
 			// HIDDEN DURATION.
 			//
-			LineItemBuilder.AppendFormat(" hidden: {0}].", ActivityReportItemParam.HiddenDuration == null ? "?" : ActivityReportItemParam.HiddenDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+			LineItemBuilder.AppendFormat(" hidden: {0}", ActivityReportItemParam.HiddenDuration == null ? "?" : ActivityReportItemParam.HiddenDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
+			if (ActivityReportItemParam.HiddenDurationPercent != null)
+				LineItemBuilder.AppendFormat(", {0}%", ActivityReportItemParam.HiddenDurationPercent.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+
+			LineItemBuilder.Append("].");
 			return LineItemBuilder.ToString();
 		}
 	}

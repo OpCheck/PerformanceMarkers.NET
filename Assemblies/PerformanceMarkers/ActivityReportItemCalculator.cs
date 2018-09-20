@@ -32,6 +32,15 @@ namespace PerformanceMarkers
 		}
 
 
+		public static double? TotalDurationPercent (ActivityReportItem ParentReportItem, IEnumerable<ActivityReportItem> ActivityReportItems)
+		{
+			if (ParentReportItem.Duration == null || ParentReportItem.Duration.Value == 0d)
+				return null;
+		
+			return TotalDuration(ActivityReportItems) / ParentReportItem.Duration.Value;
+		}
+
+
 		public static double MaxDuration (IEnumerable<ActivityReportItem> ActivityReportItems)
 		{
 			double DurationCalculation = Double.MinValue;
@@ -80,6 +89,22 @@ namespace PerformanceMarkers
 			}
 			
 			return HiddenDuration;
+		}
+
+
+		public static double? HiddenDurationPercent (ActivityReportItem ParentReportItem)
+		{
+			double? HiddenDurationTime = HiddenDuration(ParentReportItem);
+		
+			if (HiddenDurationTime == null)
+				return null;
+				
+			double TotalDurationCalc = TotalDuration(ParentReportItem.ChildReportItems);
+			
+			if (TotalDurationCalc > 0d)
+				return HiddenDurationTime.Value / TotalDurationCalc;
+		
+			return null;
 		}
 	}
 }

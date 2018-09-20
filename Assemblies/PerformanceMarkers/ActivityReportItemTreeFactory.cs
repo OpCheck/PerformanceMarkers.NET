@@ -83,7 +83,7 @@ namespace PerformanceMarkers
 			// NOW THAT THIS REPORT ITEM HAS ALL OF ITS CHILDREN WE CAN CALCULATE THE HIDDEN PROCESSING TIME.
 			//
 			CurrentReportItem.HiddenDuration = ActivityReportItemCalculator.HiddenDuration(CurrentReportItem);
-			
+			CurrentReportItem.HiddenDurationPercent = ActivityReportItemCalculator.HiddenDurationPercent(CurrentReportItem);
 			return CurrentReportItem;
 		}
 
