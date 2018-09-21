@@ -1,18 +1,18 @@
 # PerformanceMarkers.NET
 
-A lightweight, extremely easy-to-use performance optimization library for .NET that helps you:
+A lightweight, extremely easy-to-use performance reporting library for the .NET Framework. PerformanceMarkers is designed to be integrated into applications whose run times must be measured in *milliseconds*.
 
-* precisely determine where the bottlenecks are and where "hidden" processing time occurs in your application.  This  performance optimization subprocess is called the **Exposure Phase**.
-* prove (or disprove) the performance impact of a change - or set of changes.  This is called **Tuning Verification**.
-* methodically increase your application's performance over time to reach its speed limits as a fundamental part of your software development process.  This is called **Convergence**.
+PerformanceMarkers.NET supports the **Integrated Performance Metrics Approach,** which consists of the 3 following phases:
 
-How you implement this strategy for your application is simple: performance collection statements are inserted directly into your code - very similar to how you do logging.  In effect, measuring performance becomes a function of the application itself.  This is called the **Integrated Performance Metrics Approach**.
+* **Exposure.**  This phase determines where any bottlenecks are - and yields a full performance profile of your application.
+* **Tuning Verification.**  This is the phase where you make a single, isolated change to an application with the intent to alter its performance properties.  You then prove (or disprove) the performance impact of that change by **marking** the application again and obtaining a performance report.  The process of marking and then reporting is called **profiling**.
+* **Convergence.** During this phase, you are methodically increasing your application's performance over time as a fundamental part of your software development process.  This is the most "mature" phase.
+
+How this all works is simple: marker statements are inserted directly into your code - very similar to how you do logging.  In effect, measuring performance becomes a function of the application itself.
 
 We believe that collecting these metrics should be a fundamental part of the software development process due to the enormously positive quality impact it has.
 
 Since the performance metrics collection is integrated into your program - and at some point your program may be deployed to a production environment - we provide ways to disable this library.  This makes it similar to a logging framework where you want it to be less "chatty" in production scenarios.
-
-**PerformanceMarkers.NET** is already used in production environments across several industries (credit card processing, financial analytics) for the most demanding applications that have to be measured in milliseconds.
 
 ## Usage
 
@@ -39,17 +39,17 @@ Let's jump right in and show you some code, with some comments to explain what i
 	Thread.Sleep(577);
 
 	//
-	// STOP TIMING THE ACTIVITY.
+	// STOP TIMING THE QUERY ACTIVITY.
 	//
 	CreatedMarker.End("Query");
 
 	//
-	// STOP TIMING THE PROCESS.
+	// STOP TIMING THE MARKER ACTIVITY.
 	//
 	CreatedMarker.End();
 
 	//
-	// CREATE A PERFORMANCE REPORT THAT WILL BE EASILY-READABLE BY HUMANS.
+	// CREATE A PLAIN-TEXT PERFORMANCE REPORT.
 	//
 	string PerformanceReport = MarkerReportFactoryProvider.CreateReportFactory().CreateReport(CreatedMarker);
 
@@ -240,13 +240,15 @@ When you use the MarkerFactory to create a marker - the factory pays close atten
 
 ## Development & Testing Configuration
 
-The recommended configuration for non-production-like environments is this:
+The recommended configuration for development and testing environments is this:
 
 	<MarkerConfig>
 		<MarkerType>Enabled</MarkerType>
 		<MarkerFailureMode>HighlyVisible</MarkerFailureMode>
 		<MarkerReportFactoryType>PlainText</MarkerReportFactoryType>
 	</MarkerConfig>
+
+A development and testing environment is an environment where performance reporting is accepted since the purpose of these environment is to measure application quality.
 
 ## Production Configuration
 
