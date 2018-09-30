@@ -209,7 +209,7 @@ namespace PerformanceMarkers.MarkerReportFactories
 			LineItemBuilder.AppendFormat(" hidden: {0}", ActivityReportItemParam.HiddenDuration == null ? "?" : ActivityReportItemParam.HiddenDuration.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 			
 			if (ActivityReportItemParam.HiddenDurationPercent != null)
-				LineItemBuilder.AppendFormat(", {0}%", ActivityReportItemParam.HiddenDurationPercent.Value.ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
+				LineItemBuilder.AppendFormat(", {0}%", (ActivityReportItemParam.HiddenDurationPercent.Value * 100d).ToString(MarkerReportFactoryDefaults.TimingDisplayFormatCode));
 
 			LineItemBuilder.Append("].");
 			return LineItemBuilder.ToString();
